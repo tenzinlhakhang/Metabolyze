@@ -36,12 +36,11 @@ heatmap <- function(comparison,pvalue,param){
   
   # remove std counts
   
-  require(dplyr)
+  require(dplyr,quietly = TRUE)
   
   
   
   ## Heatmap Color Annotations
-  getwd()
   sampleTable <- read.csv('inputs/Groups.csv',header=T)
   sampleTable <- sampleTable %>% 
     filter(Group != "Blank")
@@ -62,7 +61,6 @@ heatmap <- function(comparison,pvalue,param){
   
   columns.interest <- c('Metabolite',row.names(col_anno))
   counts <- counts[, which(names(counts) %in% columns.interest)]
-  head(counts)
   
   row.names(counts) <- counts$Metabolite
   counts$Metabolite <- NULL
@@ -71,7 +69,6 @@ heatmap <- function(comparison,pvalue,param){
   x=apply( counts, 1, sd ) 
   df =as.data.frame(x)
   df$gene = row.names(df)
-  head(df)
   
   datasetnew <- df[df$x>0,]
   colnames(datasetnew) <- c('std','metabolite')
@@ -102,9 +99,9 @@ heatmap <- function(comparison,pvalue,param){
   pdf(pdf_name)
   
 
-  
+  if (nrow(merged) > 200){row_name_toggle <- FALSE} else { row_name_toggle <- TRUE}
   pheatmap(as.matrix(merged), color = cell_colors,
-           border_color = NA,show_rownames = param,fontsize = 6, 
+           border_color = NA,show_rownames = row_name_toggle,fontsize = 6, 
            scale = "row", cluster_rows = T,
            main = title,annotation_col = col_anno, 
            cluster_cols = T, 
@@ -126,7 +123,7 @@ heatmap <- function(comparison,pvalue,param){
   full_counts <- full_counts %>% filter(Metabolite %in% metabolites_sig)
   row.names(full_counts) <- full_counts$Metabolite
   full_counts$Metabolite <- NULL
-  nrow(full_counts)
+
   if(length(colnames(full_counts)) == length(colnames(merged))){
     print ("Only Two Group Comparison")
   } else {
@@ -144,8 +141,9 @@ heatmap <- function(comparison,pvalue,param){
     pdf_name_full = gsub(" ", "", pdf_name_full, fixed = TRUE)
     pdf(pdf_name_full)
     # two group heatmap
+    if (nrow(full_counts) > 200){row_name_toggle <- FALSE} else { row_name_toggle <- TRUE}
     pheatmap(full_counts, color = cell_colors,
-             border_color = NA,show_rownames = param,fontsize = 6, 
+             border_color = NA,show_rownames = row_name_toggle,fontsize = 6, 
              scale = "row", cluster_rows = T,
              main = title_all,annotation_col = col_anno, 
              cluster_cols = T, 

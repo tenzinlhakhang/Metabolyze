@@ -22,18 +22,41 @@ warnings.filterwarnings("ignore")
 
     
 class Analysis:
-    """ Functions for the analysis of Metabolomics Data  """
     
     def __init__(self, data,samplesheet):
         
         self.data = 'inputs/'+data
         self.samplesheet = 'inputs/'+samplesheet
 #         self.heatmap_rowname = args.rowname
+
+
+    def input_check(self):
+        id_dict = self.get_ids('ID')
+        print("Number of Samples:",len(id_dict))
+        
+        for x,y in id_dict.items():
+            print (x,':',y)
+        sample_id = self.get_ids('All')
+        if len(sample_id) != len(set(sample_id)):
+            raise Exception('Error: Check unique Sample IDs in: Groups.csv for error')
+        
+        skeleton_input = pd.read_table(self.data)
+        metabolite_list = skeleton_input['Metabolite']
+        if len(metabolite_list) != len(set(metabolite_list)):
+            raise Exception('Error: Check Metabolite column for duplicates in : Skeleton_input.tsv')
+        
+        if self.get_matrix(self.get_ids('All')).isnull().values.any():
+            raise Exception('Error: Check for Missing Values in Sample intensities: Skeleton_input.csv')
+        
+        if len(sample_id) != len(test.get_matrix(test.get_ids('All')).columns):
+            raise Exception('Error: Check if Number of Samples in Groups.csv matches Skeleton_input.tsv')
+            
+        
         
     def dir_create(self):
         groups = pd.read_csv(self.samplesheet)
-        results_folder  = 'DME-results-'+str(len(groups)) + '-Samples/'
-        sub_directories = [results_folder+ subdir for subdir in ['Volcano','Heatmap','Tables','PCA','Inputs']]
+        results_folder  = 'DME-results-'+str(len(self.get_ids('True'))) + '-Samples/'
+        sub_directories = [results_folder+ subdir for subdir in ['Volcano','Heatmap','Tables','PCA','Inputs','Pathway']]
         sub_directories.append(results_folder)
         
         for direc in sub_directories:
@@ -111,7 +134,7 @@ class Analysis:
         matrix = (skeleton_outbut_hybrid[skeleton_outbut_hybrid.columns.intersection(ids)])
         return (matrix)
     
-    def get_imputed_full_matrix(self,full_matrix):
+    def get_imputed_full_matrix(self,full_matrix,param):
         
         blank_matrix = pd.DataFrame(self.get_matrix(self.get_ids('Blank')))
         blank_threshold = pd.DataFrame(blank_matrix.mean(axis=1)*3)+10000
@@ -126,7 +149,10 @@ class Analysis:
             for val in row:
                 blankthresh = blank_threshold.loc[index, ['blank_threshold']][0]
                 if val < blankthresh:
-                    test_list.append(blankthresh)
+                    if param == 'detected':
+                        test_list.append(blankthresh)
+                    if param == 'corrected':
+                        test_list.append(0)
                 else:
                     test_list.append(val)
             test_dictionary[index] = test_list
@@ -258,15 +284,8 @@ class Analysis:
         print("\n")
         print("################")
         print("Pipeline executed:")
-        id_dict = self.get_ids('ID')
-        print("Number of Samples:",len(id_dict))
-        
-        for x,y in id_dict.items():
-            print (x,':',y)
-        sample_id = self.get_ids('Sample')
-        if len(sample_id) != len(set(sample_id)):
-            raise Exception('Check to make sure all unique sample identifiers in Groups.csv')
-        
+      
+        self.input_check()
         print("\n")
         print("Creating Directories...")
         print("\n")
@@ -281,10 +300,11 @@ class Analysis:
 
         #Meta Data on Metabolites
         standard = pd.read_table(self.data)
-        standard = standard.iloc[:,0:16]
+        detection_column_index = standard.columns.get_loc("detections")
+        standard = standard.iloc[:,0:detection_column_index]
 
         # Set directory for results folder 
-        results_folder  = 'DME-results-'+str(len(groups)) + '-Samples/'
+        results_folder  = 'DME-results-'+str(len(self.get_ids('True'))) + '-Samples/'
         
         
         # Get full matrix of intensity values with Sequence IDS replaced with ID from Groups.csv
@@ -294,7 +314,9 @@ class Analysis:
         detected_matrix_name = results_folder+'Tables/'+'Intensity.detected.values.csv'
         full_matrix.to_csv(full_matrix_name)
         
-
+        corrected_matrix = self.sequence2id(self.get_imputed_full_matrix(self.get_matrix(ids=self.get_ids('True')),param        ='corrected'))
+        corrected_matrix.index.name = 'Metabolite'
+        corrected_matrix.to_csv(results_folder+'Tables/'+'Intensity.corrected.values.csv')
         
         
         for comparison in unique_comparisons:
@@ -307,7 +329,7 @@ class Analysis:
                 if condition in sample_groups:
                     ids = (sample_groups[condition]) 
                     #print (ids)
-                    matrices.append((self.get_imputed_full_matrix(self.get_matrix(ids=ids))))
+                    matrices.append((self.get_imputed_full_matrix(self.get_matrix(ids=ids),param='detected')))
                     comparison_ids.append(ids)
             
             
@@ -461,6 +483,8 @@ class Analysis:
             final_df_m['combined_mean'] = (final_df_m[comparison[0]+'_Mean']+final_df_m[comparison[1]+'_Mean'])/2
             final_df_m['impact_score'] = (((2**abs(final_df_m['Log2FoldChange']))*final_df_m['combined_mean'])/final_df_m['ttest_pval'])/1000000
             final_df_m.impact_score = final_df_m.impact_score.round()
+            final_df_m['impact_score'] = final_df_m['impact_score'].fillna(0)
+
             
             
             ####Calculate Detection
@@ -545,7 +569,6 @@ class Analysis:
         
         imputed_intensities.index.name = "Metabolite"
         #imputed_intensities = imputed_intensities.rename(columns={ imputed_intensities.columns[0]: "Metabolite" })
-        print(imputed_intensities.columns)
     
         imputed_intensities.to_csv(results_folder+'Tables/'+'Intensity.detected.values.csv')
         print("Generating Full Heatmap")
@@ -560,26 +583,23 @@ class Analysis:
         
         copyfile('inputs/Groups.csv', results_folder+'Inputs/'+'Groups.csv')
         copyfile('inputs/skeleton_output.tsv', results_folder+'Inputs/'+'skeleton_output.tsv')
-        
-        print("Performing Pathway Analysis")
 
         table_directory = results_folder+'Tables'
         print("resultsfolder path")
-        print(results_folder)
         
 
         print('#######')
 #         for file in os.listdir(results_folder+'Tables'):
 #             if file.endswith('corrected.csv'):
         path = os.path.abspath(results_folder+'Tables')
+        output_path = os.path.abspath(results_folder+'Pathway')
 
-        proc = sp.Popen(['Rscript','scripts/pathway.R',path])
+        proc = sp.Popen(['Rscript','scripts/pathway.R',path,output_path])
 #                 time.sleep(2)
 
         print("\n")
         print("\n")
         print("\n")
-        print("Pipeline Finished")
         print("#######")
         print("\n")
         print("\n")
@@ -590,10 +610,5 @@ class Analysis:
 
 test = Analysis(data='skeleton_output.tsv',samplesheet='Groups.csv')
 test.t_test()
-
-
-
-
-
 
 

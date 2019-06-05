@@ -1,9 +1,10 @@
-library('MetaboAnalystR')
-
+library('MetaboAnalystR',quietly = TRUE)
+library('filesstrings',quietly = TRUE)
 args = commandArgs(trailingOnly=TRUE)
 
 setwd(args[1])
 
+output_path = args[2]
 files <- list.files(pattern = "\\corrected.csv")
 
 
@@ -13,7 +14,6 @@ perform_pathways <- function(file){
   comparison <- comparison[ which(comparison$ttest_pval < 0.05), ]
   
   tmp.vec <- comparison$Metabolite
-  print(tmp.vec)
   
   # Create mSetObj for storing objects created during your analysis
   mSet<-InitDataObjects("conc", "pathora", FALSE)
@@ -45,8 +45,20 @@ perform_pathways <- function(file){
   
   
   file.rename('pathway_results.csv',output_name )
-  
+  file.move(output_name,output_path)
   
 }
 
+
+message(" ========== Performing Pathway Analysis ========== ")
+
+
 lapply(files,perform_pathways)
+
+file.remove('hsa.rda')
+file.remove('syn_nms.rds')
+file.remove('name_map.csv')
+file.remove('compound_db.rds')
+
+message(" ========== Pipeline Finished ========== ")
+

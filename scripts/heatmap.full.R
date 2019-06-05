@@ -63,7 +63,7 @@ row.names(col_anno)<- sampleTable$File
 
 
 
-title = paste(length(colnames(full_counts)), 'x' ,nrow(merged))
+title = paste(length(colnames(merged)), 'x' ,nrow(merged))
 title= gsub(" ", "", title, fixed = TRUE)
 
 title.string <- as.character(args[2])
@@ -71,6 +71,7 @@ pdf_name = paste(directory,'/Heatmap/plot.heatmap.expressed.metabolite.',title.s
 pdf_name = gsub(" ", "", pdf_name, fixed = TRUE)
 pdf(pdf_name)
 library('pheatmap')
+if (nrow(merged) > 200){row_name_toggle <- FALSE} else { row_name_toggle <- TRUE}
 pheatmap(as.matrix(merged), color = cell_colors,
          border_color = NA,show_rownames = T,fontsize = 6, 
          scale = "row", cluster_rows = T,
