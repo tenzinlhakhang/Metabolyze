@@ -56,7 +56,7 @@ class Analysis:
     def dir_create(self):
         groups = pd.read_csv(self.samplesheet)
         results_folder  = 'DME-results-'+str(len(self.get_ids('True'))) + '-Samples/'
-        sub_directories = [results_folder+ subdir for subdir in ['Volcano','Heatmap','Tables','PCA','Inputs','Pathway','Correlation']]
+        sub_directories = [results_folder+ subdir for subdir in ['Volcano','Heatmap','Tables','PCA','Inputs','Pathway']]
         sub_directories.append(results_folder)
         
         for direc in sub_directories:
@@ -134,7 +134,7 @@ class Analysis:
         matrix = (skeleton_outbut_hybrid[skeleton_outbut_hybrid.columns.intersection(ids)])
         return (matrix)
     
-    def get_imputed_full_matrix(self,full_matrix):
+    def get_imputed_full_matrix(self,full_matrix,param):
         
         blank_matrix = pd.DataFrame(self.get_matrix(self.get_ids('Blank')))
         blank_threshold = pd.DataFrame(blank_matrix.mean(axis=1)*3)+10000
@@ -149,7 +149,10 @@ class Analysis:
             for val in row:
                 blankthresh = blank_threshold.loc[index, ['blank_threshold']][0]
                 if val < blankthresh:
-                    test_list.append(blankthresh)
+                    if param == 'detected':
+                        test_list.append(blankthresh)
+                    if param == 'corrected':
+                        test_list.append(0)
                 else:
                     test_list.append(val)
             test_dictionary[index] = test_list
@@ -311,7 +314,9 @@ class Analysis:
         detected_matrix_name = results_folder+'Tables/'+'Intensity.detected.values.csv'
         full_matrix.to_csv(full_matrix_name)
         
-
+        corrected_matrix = self.sequence2id(self.get_imputed_full_matrix(self.get_matrix(ids=self.get_ids('True')),param        ='corrected'))
+        corrected_matrix.index.name = 'Metabolite'
+        corrected_matrix.to_csv(results_folder+'Tables/'+'Intensity.corrected.values.csv')
         
         
         for comparison in unique_comparisons:
@@ -324,7 +329,7 @@ class Analysis:
                 if condition in sample_groups:
                     ids = (sample_groups[condition]) 
                     #print (ids)
-                    matrices.append((self.get_imputed_full_matrix(self.get_matrix(ids=ids))))
+                    matrices.append((self.get_imputed_full_matrix(self.get_matrix(ids=ids),param='detected')))
                     comparison_ids.append(ids)
             
             
@@ -590,8 +595,6 @@ class Analysis:
         output_path = os.path.abspath(results_folder+'Pathway')
 
         proc = sp.Popen(['Rscript','scripts/pathway.R',path,output_path])
-        
-        proc = sp.Popen(['python','-W ignore scripts/impact.correlation.py',results_folder+'Tables/dme.compiled.csv'])
 #                 time.sleep(2)
 
         print("\n")
@@ -607,7 +610,4 @@ class Analysis:
 
 test = Analysis(data='skeleton_output.tsv',samplesheet='Groups.csv')
 test.t_test()
-
-
-
 

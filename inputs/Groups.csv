@@ -1,17 +1,26 @@
 File,id,Group
-S04426,np OLFR2 A,np
-S04427,np OLFR2 B,np
-S04428,np OLFR2 C,np
-S04429,np GPI1 A,np
-S04430,np GPI1 B,np
-S04431,NP GPI1 C,np
-S04432,p OLFR2 A,p
-S04433,p OLFR2 B,p
-S04434,p GPI1 A,p
-S04435,p GPI1 B,p
-SQ319_B_0,Blank_0,Blank
-SQ319_B_1,Blank_1,Blank
-SQ319_B_2,Blank_2,Blank
-SQ319_B_3,Blank_3,Blank
-SQ319_B_4,Blank_4,Blank
-SQ319_B_5,Blank_5,Blank
+S03763,e312-1,uninfected DMSO
+S03764,e312-2,infected DMSO
+S03765,e312-3,uninfected DMSO
+S03766,e312-4,infected 1uM Brivaracetam
+S03767,e312-5,infected 1uM Brivaracetam
+S03768,e312-6,infected 1uM Brivaracetam
+S03769,e312-7,infected DMSO
+S03770,e312-8,infected 1 uM Levetiracetam
+S03771,e312-9,infected 1uM Brivaracetam
+S03772,e312-10,infected 1 uM Levetiracetam
+S03773,e312-11,infected DMSO
+S03774,e312-12,uninfected DMSO
+S03775,e312-13,infected 1uM Brivaracetam
+S03776,e312-14,infected 1 uM Levetiracetam
+S03777,e312-15,infected 1uM Brivaracetam
+S03778,e312-16,infected 1 uM Levetiracetam
+S03779,e312-17,infected 1 uM Levetiracetam
+S03780,e312-18,infected 1uM Brivaracetam
+SQ280_B_0,Blank_0,Blank
+SQ280_B_1,Blank_1,Blank
+SQ280_B_2,Blank_2,Blank
+SQ280_B_3,Blank_3,Blank
+SQ280_B_4,Blank_4,Blank
+SQ280_B_5,Blank_5,Blank
+SQ280_B_6,Blank_6,Blank
