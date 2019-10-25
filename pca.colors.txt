@@ -1,3 +1,0 @@
-[	#FF0000,#0000FF,#000000,	#008000,#FFFF00,#800080,#FFC0CB]
-
-[red,blue,black,green,yellow, purple,pink]
