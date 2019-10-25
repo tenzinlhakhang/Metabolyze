@@ -50,6 +50,11 @@ cell_colors = colorRampPalette(c("#043177", "#244B88", "#FAFAFA",
 
 # color annotations
 sampleTable <- read.csv('inputs/Groups.csv',header=T)
+
+sampleTable <- sampleTable[which(sampleTable$Group != 'Blank'),]
+
+subset_color <- sampleTable[!duplicated(sampleTable[c("Group","Color")]),]
+
 columns.interest <- c('id','Group')
 sampleTable <- sampleTable[,columns.interest]
 sampleTable <- as.data.frame(sampleTable)
@@ -62,6 +67,10 @@ names(col_anno) <- c('Condition')
 row.names(col_anno)<- sampleTable$File
 
 
+Color <- as.character(subset_color$Color)
+names(Color) <- as.character(subset_color$Group)
+ann_color <- list(Color)
+names(ann_color) <- 'Condition'
 
 title = paste(length(colnames(merged)), 'x' ,nrow(merged))
 title= gsub(" ", "", title, fixed = TRUE)
@@ -74,7 +83,7 @@ library('pheatmap')
 if (nrow(merged) > 200){row_name_toggle <- FALSE} else { row_name_toggle <- TRUE}
 pheatmap(as.matrix(merged), color = cell_colors,
          border_color = NA,show_rownames = T,fontsize = 6, 
-         scale = "row", cluster_rows = T,
+         scale = "row", cluster_rows = T,annotation_colors = ann_color,
          main = title,annotation_col = col_anno, 
          cluster_cols = T, 
          fontsize_col = 10, width = 12, height = 8)

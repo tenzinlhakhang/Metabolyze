@@ -1,0 +1,23 @@
+"","Total","Expected","Hits","Raw p","-log(p)","Holm adjust","FDR","Impact"
+"Citrate cycle (TCA cycle)",20,0.083091,3,5.6779e-05,9.7763,0.0045423,0.0045423,0.15069
+"Arginine and proline metabolism",77,0.3199,3,0.0032131,5.7405,0.25384,0.10893,0.01997
+"Alanine, aspartate and glutamate metabolism",24,0.099709,2,0.0040847,5.5005,0.31861,0.10893,0.00285
+"Pentose phosphate pathway",32,0.13295,2,0.0072113,4.9321,0.55527,0.11538,0.09801
+"Pyruvate metabolism",32,0.13295,2,0.0072113,4.9321,0.55527,0.11538,0.18254
+"Butanoate metabolism",40,0.16618,2,0.011141,4.4972,0.83554,0.13984,0.10287
+"Nicotinate and nicotinamide metabolism",44,0.1828,2,0.013392,4.3131,0.991,0.13984,0
+"Phenylalanine metabolism",45,0.18695,2,0.013984,4.2699,1,0.13984,0
+"Glyoxylate and dicarboxylate metabolism",50,0.20773,2,0.017112,4.068,1,0.1521,0.0242
+"Cysteine and methionine metabolism",56,0.23265,2,0.021227,3.8525,1,0.16982,0.11707
+"Tyrosine metabolism",76,0.31575,2,0.037575,3.2814,1,0.27327,0
+"Taurine and hypotaurine metabolism",20,0.083091,1,0.080196,2.5233,1,0.53464,0.02158
+"Pantothenate and CoA biosynthesis",27,0.11217,1,0.10687,2.2362,1,0.60786,0
+"Valine, leucine and isoleucine biosynthesis",27,0.11217,1,0.10687,2.2362,1,0.60786,0.02173
+"Glycolysis or Gluconeogenesis",31,0.12879,1,0.12179,2.1054,1,0.60786,0.0953
+"Vitamin B6 metabolism",32,0.13295,1,0.12549,2.0755,1,0.60786,0.01914
+"Terpenoid backbone biosynthesis",33,0.1371,1,0.12917,2.0466,1,0.60786,0
+"Ascorbate and aldarate metabolism",45,0.18695,1,0.17228,1.7586,1,0.76569,0.01617
+"Glycine, serine and threonine metabolism",48,0.19942,1,0.18275,1.6996,1,0.76949,0
+"Pentose and glucuronate interconversions",53,0.22019,1,0.19994,1.6097,1,0.79978,0
+"Pyrimidine metabolism",60,0.24927,1,0.22346,1.4985,1,0.85129,0.06691
+"Purine metabolism",92,0.38222,1,0.32325,1.1293,1,1,0.00829

@@ -50,13 +50,19 @@ class Analysis:
         
         if len(sample_id) != len(test.get_matrix(test.get_ids('All')).columns):
             raise Exception('Error: Check if Number of Samples in Groups.csv matches Skeleton_input.tsv')
-            
+    
+        skeleton = self.get_ids('All')
+        groups = pd.read_csv(self.samplesheet)['File'].tolist()
         
+        if set(groups).issubset(skeleton) == False:
+            raise Exception('Samplesheet Sample Names Incorrectly Match Skeleton File Names')
+    
+
         
     def dir_create(self):
         groups = pd.read_csv(self.samplesheet)
         results_folder  = 'DME-results-'+str(len(self.get_ids('True'))) + '-Samples/'
-        sub_directories = [results_folder+ subdir for subdir in ['Volcano','Heatmap','Tables','PCA','Inputs','Pathway']]
+        sub_directories = [results_folder+ subdir for subdir in ['Volcano','Heatmap','Tables','PCA','Inputs','Pathway','Impacts']]
         sub_directories.append(results_folder)
         
         for direc in sub_directories:
@@ -67,7 +73,7 @@ class Analysis:
     def get_groups(self):
     # Get corresponding IDs for each group in Groups.csv
 
-        project = pd.read_csv(self.samplesheet)
+        project = pd.read_csv('inputs/Groups.tsv',sep='\t')
         grouped_samples = {}
 
         for condition in (project.Group.unique()):
@@ -284,7 +290,14 @@ class Analysis:
         print("\n")
         print("################")
         print("Pipeline executed:")
-      
+        samplesheet = pd.read_csv("inputs/Groups.tsv",sep='\t')
+        samplesheet['Color'] = 'NA'
+        colors = ['#FF0000','#0000FF','#000000','#008000','#FFFF00','#800080','#FFC0CB']
+        zipped_up = zip(colors,list(self.get_groups().keys()))
+        for x,y in zipped_up:
+            samplesheet.loc[samplesheet.Group == y ,'Color'] = x
+
+        samplesheet.to_csv('inputs/Groups.csv')
         self.input_check()
         print("\n")
         print("Creating Directories...")
@@ -337,13 +350,13 @@ class Analysis:
             #generate samplesheet just for comparison
             
             
-            samplesheet = pd.read_csv(self.samplesheet)
 
             samplesheet_comparison = samplesheet.loc[samplesheet['File'].isin(sample_ids)]
             
             samplesheet_comparison_name = results_folder+'PCA/samplesheet.csv'
             samplesheet_comparison.to_csv(samplesheet_comparison_name)
             
+            print("PCASAMPLESHEET",samplesheet_comparison)
             #print ((matrices.shape())
             group_sample_number =  int((matrices[0].shape)[1])
             group_sample_number_2 = int(group_sample_number+ ((matrices[1].shape)[1]))
@@ -388,68 +401,12 @@ class Analysis:
                 pearson_df.columns = [group]
                 return(pearson_df)
             
-            
-             
-            # Not blank corrected test
-#             df_blankless['ttest_pval'] = ((scipy.stats.ttest_ind(df_blankless.iloc[:, :group_sample_number], df_blankless.iloc[:, group_sample_number:group_sample_number_2], axis=1))[1])
-#             group_1_df = (pd.DataFrame(df_blankless.iloc[:, :group_sample_number]))
-            
-#             group_2_df = (pd.DataFrame(df_blankless.iloc[:, group_sample_number:group_sample_number_2]))
-            
-            
-#             pearson_1 = get_correlation(group_1_df,comparison[0])
-#             pearson_2 = get_correlation(group_2_df,comparison[1])
-            
-#             merged_pearson = pearson_1.join(pearson_2, how='outer')
-#             merged_pearson['Metabolite'] = merged_pearson.index
-            
-            
-#             df_blankless[comparison[0]+'_Mean'] = (group_1_df.mean(axis=1))
-#             df_blankless[comparison[1]+'_Mean'] = (group_2_df.mean(axis=1))
-#             df_blankless['Log2FoldChange'] = np.log2(((group_1_df.mean(axis=1)))/((group_2_df.mean(axis=1))))
-#             #df_blankless = df_blankless.round(2)
-            
-            
-#             final_blankless = pd.merge(standard, df_blankless, on='Metabolite')
-            
-#             blankless_name = (results_folder+comparison[0]+'_vs_'+comparison[1]+'.uncorrected.csv')
-            
-            
-            #final_blankless = self.sequence2id(final_blankless)
-            #final_blankless.to_csv(blankless_name)
-            
-            
-           # Blank corrected
-            
-            
-            
             blank_matrix = pd.DataFrame(self.get_matrix(self.get_ids('Blank')))
             blank_matrix.to_csv(results_folder+'Tables/'+'blank_intensity.csv')
             blank_threshold = pd.DataFrame(blank_matrix.mean(axis=1)*3)+10000
             blank_threshold['Metabolite'] = blank_threshold.index
             blank_threshold.columns = ['blank_threshold','Metabolite']
 
-            
-#             test_dictionary = {}
-            
-#             for index, row in df_m.iterrows():
-#                 test_list = []
-#                 #print(index)
-#                 for val in row:
-#                     blankthresh = blank_threshold.loc[index, ['blank_threshold']][0]
-#                     if val < blankthresh:
-#                         test_list.append(blankthresh)
-#                     else:
-#                         test_list.append(val)
-#                 test_dictionary[index] = test_list
-            
-#             df_test = (pd.DataFrame.from_dict(test_dictionary))
-#             final = df_test.transpose()
-#             final.columns = list(df_m)
-#             df_m = final.copy()
-            
-#             df_m['Metabolite'] = df_m.index
-        
             
             df_m['ttest_pval'] = ((scipy.stats.ttest_ind(df_m.iloc[:, :group_sample_number], df_m.iloc[:, group_sample_number:group_sample_number_2], axis=1))[1])
             df_m['1/pvalue'] = float(1)/df_m['ttest_pval']      
@@ -560,7 +517,8 @@ class Analysis:
             
         compiled.to_csv(results_folder+'Tables/'+'dme.compiled.csv')
         
-        dme_meta_data = standard[['Metabolite','Formula','Polarity (z)','mz','ppm','RT','RT_range']]
+        dme_meta_data = standard[['Metabolite','Formula','Ion Type','mz','ppm','RT','RT_range']]
+
         dme_meta_data.index = dme_meta_data['Metabolite']
         compiled = pd.merge(dme_meta_data,compiled,on='Metabolite')
         compiled = change_column_order(compiled, 'Detection', 7)
@@ -594,9 +552,17 @@ class Analysis:
         path = os.path.abspath(results_folder+'Tables')
         output_path = os.path.abspath(results_folder+'Pathway')
 
-        proc = sp.Popen(['Rscript','scripts/pathway.R',path,output_path])
+        
+        if 'Feature' in str(final_df_m['Metabolite'].tolist()[2]):
+            print('Unsuitable Metabolite Names for Pathway Analysis')
+        else:
+            proc = sp.Popen(['Rscript','scripts/pathway.R',path,output_path])
 #                 time.sleep(2)
+        impact_folder = results_folder + 'Tables/dme.compiled.csv'
+        proc = sp.Popen(['python','scripts/impact.correlation.py', impact_folder])
 
+
+        proc = sp.Popen(['python','scripts/sig.genes.py',path])
         print("\n")
         print("\n")
         print("\n")

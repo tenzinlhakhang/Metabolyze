@@ -75,7 +75,7 @@ Then run the pairwise.metabolyze.R like below, pointing to the Intensity.detecte
 Running the script below will create a Paired-DME-results-40-Samples directory with the results inside.
 
 ```
-$ Rscript pairwise.metabolyze.R DME-results-40-Samples/Tables/Intensity.detected.values.csv
+$ Rscript scripts/pairwise.metabolyze.R DME-results-40-Samples/Tables/Intensity.detected.values.csv
 
 ```
 
@@ -85,7 +85,7 @@ In order to perform the flux analysis you can run the following script below, th
 flux.output.csv in the associated Tables directory where the Intensity.values.detected.csv file was located.
 
 ```
-python flux.py DME-results-40-Samples/Tables/Intensity.detected.values.csv
+python scripts/flux.py DME-results-40-Samples/Tables/Intensity.detected.values.csv
 ```
 
 

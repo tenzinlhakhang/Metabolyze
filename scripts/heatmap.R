@@ -42,6 +42,10 @@ heatmap <- function(comparison,pvalue,param){
   
   ## Heatmap Color Annotations
   sampleTable <- read.csv('inputs/Groups.csv',header=T)
+  sampleTable <- sampleTable[which(sampleTable$Group != 'Blank'),]
+  
+  subset_color <- sampleTable[!duplicated(sampleTable[c("Group","Color")]),]
+  
   sampleTable <- sampleTable %>% 
     filter(Group != "Blank")
   columns.interest <- c('id','Group')
@@ -58,6 +62,12 @@ heatmap <- function(comparison,pvalue,param){
   col_anno <- as.data.frame(sampleTable$Condition)
   names(col_anno) <- c('Condition')
   row.names(col_anno)<- sampleTable$File
+  
+  Color <- as.character(subset_color$Color)
+  names(Color) <- as.character(subset_color$Group)
+  ann_color <- list(Color)
+  names(ann_color) <- 'Condition'
+
   
   columns.interest <- c('Metabolite',row.names(col_anno))
   counts <- counts[, which(names(counts) %in% columns.interest)]
@@ -102,7 +112,7 @@ heatmap <- function(comparison,pvalue,param){
   if (nrow(merged) > 200){row_name_toggle <- FALSE} else { row_name_toggle <- TRUE}
   pheatmap(as.matrix(merged), color = cell_colors,
            border_color = NA,show_rownames = row_name_toggle,fontsize = 6, 
-           scale = "row", cluster_rows = T,
+           scale = "row", cluster_rows = T, annotation_colors = ann_color,
            main = title,annotation_col = col_anno, 
            cluster_cols = T, 
            fontsize_col = 10, width = 12, height = 8)
@@ -144,7 +154,7 @@ heatmap <- function(comparison,pvalue,param){
     if (nrow(full_counts) > 200){row_name_toggle <- FALSE} else { row_name_toggle <- TRUE}
     pheatmap(full_counts, color = cell_colors,
              border_color = NA,show_rownames = row_name_toggle,fontsize = 6, 
-             scale = "row", cluster_rows = T,
+             scale = "row", cluster_rows = T,annotation_colors = ann_color,
              main = title_all,annotation_col = col_anno, 
              cluster_cols = T, 
              fontsize_col = 10, width = 12, height = 8)
