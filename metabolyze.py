@@ -572,8 +572,6 @@ class Analysis:
         print("\n")
 
         
-
-
-test = Analysis(data='skeleton_output.tsv',samplesheet='Groups.csv')
-test.t_test()
-
+if __name__ == '__main__':
+    results = Analysis(data='skeleton_output.tsv',samplesheet='Groups.csv')
+    Results.t_test()
