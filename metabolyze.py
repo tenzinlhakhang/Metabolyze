@@ -48,7 +48,7 @@ class Analysis:
         if self.get_matrix(self.get_ids('All')).isnull().values.any():
             raise Exception('Error: Check for Missing Values in Sample intensities: Skeleton_input.csv')
         
-        if len(sample_id) != len(test.get_matrix(test.get_ids('All')).columns):
+        if len(sample_id) != len(self.get_matrix(self.get_ids('All')).columns):
             raise Exception('Error: Check if Number of Samples in Groups.csv matches Skeleton_input.tsv')
     
         skeleton = self.get_ids('All')
@@ -571,7 +571,6 @@ class Analysis:
         print("\n")
         print("\n")
 
-        
-if __name__ == '__main__':
-    results = Analysis(data='skeleton_output.tsv',samplesheet='Groups.csv')
-    Results.t_test()
+
+result = Analysis(data='skeleton_output.tsv',samplesheet='Groups.csv')
+result.t_test()

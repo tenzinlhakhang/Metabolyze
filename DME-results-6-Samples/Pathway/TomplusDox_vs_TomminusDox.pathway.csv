@@ -1,0 +1,21 @@
+"","Total","Expected","Hits","Raw p","-log(p)","Holm adjust","FDR","Impact"
+"Aminoacyl-tRNA biosynthesis",48,0.68129,6,3.2905e-05,10.322,0.002764,0.002764,0
+"Alanine, aspartate and glutamate metabolism",28,0.39742,4,0.00049924,7.6024,0.041437,0.020968,0.16186
+"Arginine biosynthesis",14,0.19871,3,0.0008174,7.1094,0.067027,0.022887,0
+"Pantothenate and CoA biosynthesis",19,0.26968,3,0.0020778,6.1765,0.1683,0.039195,0.05714
+"D-Glutamine and D-glutamate metabolism",6,0.085161,2,0.0027883,5.8823,0.22306,0.039195,0
+"beta-Alanine metabolism",21,0.29806,3,0.0027996,5.8783,0.22306,0.039195,0.50373
+"Purine metabolism",65,0.92258,4,0.011657,4.4518,0.90926,0.13989,0.08302
+"Pyrimidine metabolism",39,0.55355,3,0.016295,4.1169,1,0.1711,0.01318
+"Glycine, serine and threonine metabolism",33,0.46839,2,0.077903,2.5523,1,0.69152,0
+"Nitrogen metabolism",6,0.085161,1,0.082324,2.4971,1,0.69152,0
+"Arginine and proline metabolism",38,0.53935,2,0.099427,2.3083,1,0.69977,0.07311
+"Valine, leucine and isoleucine biosynthesis",8,0.11355,1,0.1083,2.2229,1,0.69977,0
+"Taurine and hypotaurine metabolism",8,0.11355,1,0.1083,2.2229,1,0.69977,0.28571
+"Butanoate metabolism",15,0.2129,1,0.19379,1.641,1,1,0
+"Histidine metabolism",16,0.2271,1,0.20534,1.5831,1,1,0.22131
+"Selenocompound metabolism",20,0.28387,1,0.25,1.3863,1,1,0
+"Citrate cycle (TCA cycle)",20,0.28387,1,0.25,1.3863,1,1,0.05856
+"Propanoate metabolism",23,0.32645,1,0.28191,1.2662,1,1,0
+"Glyoxylate and dicarboxylate metabolism",32,0.45419,1,0.37005,0.99411,1,1,0
+"Cysteine and methionine metabolism",33,0.46839,1,0.37918,0.96974,1,1,0.10446
