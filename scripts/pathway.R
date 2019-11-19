@@ -11,8 +11,6 @@ setwd(args[1])
 output_path = args[2]
 files <- list.files(pattern = "\\corrected.csv")
 
-
-
 comparison_full <- read.csv(files[1])
 
 full_tmp.vec <- comparison_full$Metabolite
@@ -31,7 +29,7 @@ full_mSet<-CreateMappingResultTable(full_mSet);
 #mSet<-GetCandidateList(mSet);
 
 # Select the pathway library, ranging from mammals to prokaryotes
-full_mSet<-SetKEGG.PathLib(full_mSet, "hsa")
+full_mSet<-SetKEGG.PathLib(full_mSet, "hsa",lib.version='current')
 
 # Set the metabolite filter
 full_mSet<-SetMetabolomeFilter(full_mSet, F);
@@ -76,7 +74,7 @@ perform_pathways <- function(file){
   #mSet<-GetCandidateList(mSet);
   
   # Select the pathway library, ranging from mammals to prokaryotes
-  mSet<-SetKEGG.PathLib(mSet, "hsa")
+  mSet<-SetKEGG.PathLib(mSet, "hsa",lib.version='current')
   
   # Set the metabolite filter
   mSet<-SetMetabolomeFilter(mSet, F);
