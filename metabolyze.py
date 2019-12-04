@@ -572,5 +572,19 @@ class Analysis:
         print("\n")
 
 
-result = Analysis(data='skeleton_output.tsv',samplesheet='Groups.csv')
+
+skeleton_name = [x for x in os.listdir('inputs') if x.endswith('output.tsv')][0]
+
+result = Analysis(data=skeleton_name,samplesheet='Groups.csv')
 result.t_test()
+
+
+
+
+
+
+
+
+
+
+
