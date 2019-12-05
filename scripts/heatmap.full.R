@@ -82,7 +82,7 @@ pdf(pdf_name)
 library('pheatmap')
 if (nrow(merged) > 200){row_name_toggle <- FALSE} else { row_name_toggle <- TRUE}
 pheatmap(as.matrix(merged), color = cell_colors,
-         border_color = NA,show_rownames = T,fontsize = 6, 
+         border_color = NA,show_rownames = T,show_rownames=row_name_toggle,fontsize = 6, 
          scale = "row", cluster_rows = T,annotation_colors = ann_color,
          main = title,annotation_col = col_anno, 
          cluster_cols = T, 
