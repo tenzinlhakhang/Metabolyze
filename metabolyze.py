@@ -297,7 +297,7 @@ class Analysis:
         for x,y in zipped_up:
             samplesheet.loc[samplesheet.Group == y ,'Color'] = x
 
-        samplesheet.to_csv('inputs/Groups.csv')
+        samplesheet.to_csv('inputs/Groups.csv',index = False)
         self.input_check()
         print("\n")
         print("Creating Directories...")
