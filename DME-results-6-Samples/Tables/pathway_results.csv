@@ -1,0 +1,7 @@
+"","Total","Expected","Hits","Raw p","-log(p)","Holm adjust","FDR","Impact"
+"Glycine, serine and threonine metabolism",33,0.10645,2,0.0042247,5.4668,0.35487,0.35487,0
+"Valine, leucine and isoleucine biosynthesis",8,0.025806,1,0.025574,3.6662,1,0.80454,0
+"Vitamin B6 metabolism",9,0.029032,1,0.028734,3.5497,1,0.80454,0.07843
+"Porphyrin and chlorophyll metabolism",30,0.096774,1,0.093216,2.3728,1,1,0.02799
+"Aminoacyl-tRNA biosynthesis",48,0.15484,1,0.14572,1.9261,1,1,0
+"Purine metabolism",65,0.20968,1,0.19304,1.6448,1,1,0.01281
