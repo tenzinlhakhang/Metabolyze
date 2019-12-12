@@ -13,6 +13,8 @@ import sys
 import time
 
 
+flux = sys.argv[1]
+
 warnings.filterwarnings("ignore")
 
 #import argparse
@@ -298,6 +300,7 @@ class Analysis:
             samplesheet.loc[samplesheet.Group == y ,'Color'] = x
 
         samplesheet.to_csv('inputs/Groups.csv',index = False)
+        
         self.input_check()
         print("\n")
         print("Creating Directories...")
@@ -318,7 +321,7 @@ class Analysis:
 
         # Set directory for results folder 
         results_folder  = 'DME-results-'+str(len(self.get_ids('True'))) + '-Samples/'
-        
+        samplesheet.to_csv(results_folder+'Inputs/Groups.tsv')
         
         # Get full matrix of intensity values with Sequence IDS replaced with ID from Groups.csv
         full_matrix = self.get_matrix(self.get_ids(full='True'))
@@ -563,6 +566,8 @@ class Analysis:
 
 
         proc = sp.Popen(['python','scripts/sig.genes.py',path])
+
+
         print("\n")
         print("\n")
         print("\n")
@@ -577,6 +582,7 @@ skeleton_name = [x for x in os.listdir('inputs') if x.endswith('output.tsv')][0]
 
 result = Analysis(data=skeleton_name,samplesheet='Groups.csv')
 result.t_test()
+
 
 
 

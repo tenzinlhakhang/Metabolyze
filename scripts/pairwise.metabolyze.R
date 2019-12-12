@@ -10,6 +10,7 @@ options(java.parameters = "-Xmx8G")
 # relevent arguments
 
 library('DESeq2')
+library('stringr')
 args = commandArgs(trailingOnly=TRUE)
 
 
@@ -82,45 +83,57 @@ dds = DESeqDataSetFromMatrix(countData = counts_table_rounded, colData = groups_
 dds = DESeq(dds, betaPrior = TRUE, parallel = FALSE)
 
 
-resultsNames(dds)
-library('stringr')
 
-comparison_level_top = levels(groups_table$Group)[1]
-comparison_top = paste('Group',levels(groups_table$Group)[1])
-comparison_top = str_replace_all(string=comparison_top, pattern=" ", repl="")
 
-comparison_level_base = levels(groups_table$Group)[2]
-comparison_base = paste('Group',levels(groups_table$Group)[2])
-comparison_base = str_replace_all(string=comparison_base, pattern=" ", repl="")
+comparisons <- resultsNames(dds)
+index <- grep("Group",comparisons)
+group_comparisons <- comparisons[index]
 
-counts_table$Metabolite <- row.names(counts_table)
 
-results_1<- results(dds, contrast=list(comparison_top,comparison_base))
-results_1$Metabolite <- row.names(results_1)
-results_1_merged = merge(as.data.frame(results_1),counts_table,on='Metabolite')
 
-results_2 <- results(dds, contrast=list(comparison_base,comparison_top))
-results_2$Metabolite <- row.names(results_2)
-results_2_merged = merge(as.data.frame(results_2),counts_table,on='Metabolite')
+make_combinations <- function(x) {
+
+  l <- length(x)
+  mylist <- lapply(2:l, function(y) {
+    combn(x, y, simplify = FALSE)
+  })
+  mylist
+
+}
+
+group_comparisons <- (make_combinations(group_comparisons)[1])
+
 
 
 results_directory = paste('Paired-','DME-results-',nrow(groups_table),'-Samples')
 results_directory <- str_replace_all(string=results_directory, pattern=" ", repl="")
 dir.create(results_directory)
 
-result_1_outname = paste(results_directory,'/','Adjusted.',comparison_level_top,'_vs_',comparison_level_base,'.csv')
-result_1_outname = str_replace_all(string=result_1_outname, pattern=" ", repl="")
 
-result_2_outname = paste(results_directory,'/','Adjusted.',comparison_level_base,'_vs_',comparison_level_top,'.csv')
-result_2_outname = str_replace_all(string=result_2_outname, pattern=" ", repl="")
+for(i in group_comparisons){
+	for(x in i){
 
-Groups_outname = paste(results_directory,'/','Groups.csv')
-Groups_outname = str_replace_all(string=Groups_outname, pattern=" ", repl="")
+	comparison_top <- (unlist(x[1]))
+	comparison_base <- (unlist(x[2]))
+	counts_table$Metabolite <- row.names(counts_table)
+	
+	results_1<- results(dds, contrast=list(comparison_top,comparison_base))
+	results_1$Metabolite <- row.names(results_1)
+	results_1_merged = merge(as.data.frame(results_1),counts_table,on='Metabolite')
 
-write.csv(results_1_merged,result_1_outname)
-write.csv(results_2_merged,result_2_outname)
-write.csv(groups_table,Groups_outname)
+	results_2 <- results(dds, contrast=list(comparison_base,comparison_top))
+	results_2$Metabolite <- row.names(results_2)
+	results_2_merged = merge(as.data.frame(results_2),counts_table,on='Metabolite')
+	
+	result_1_outname = paste(results_directory,'/','Adjusted.',comparison_top,'_vs_',comparison_base,'.csv')
+	result_1_outname = str_replace_all(string=result_1_outname, pattern=" ", repl="")
 
+	result_2_outname = paste(results_directory,'/','Adjusted.',comparison_base,'_vs_',comparison_top,'.csv')
+	result_2_outname = str_replace_all(string=result_2_outname, pattern=" ", repl="")
 
+	write.csv(results_1_merged,result_1_outname)
+	write.csv(results_2_merged,result_2_outname)
+	}
+}
 
-
+message("#####  Paired Analysis Complete ####", nrow(counts_table))
