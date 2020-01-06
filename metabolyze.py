@@ -13,7 +13,6 @@ import sys
 import time
 
 
-flux = sys.argv[1]
 
 warnings.filterwarnings("ignore")
 
@@ -294,7 +293,7 @@ class Analysis:
         print("Pipeline executed:")
         samplesheet = pd.read_csv("inputs/Groups.tsv",sep='\t')
         samplesheet['Color'] = 'NA'
-        colors = ['#FF0000','#0000FF','#000000','#008000','#FFFF00','#800080','#FFC0CB']
+        colors = ['#FF0000','#0000FF','#000000','#008000','#FFFF00','#800080','#FFC0CB',"#c0feff","#5b2d8c","#7f8c2d"]
         zipped_up = zip(colors,list(self.get_groups().keys()))
         for x,y in zipped_up:
             samplesheet.loc[samplesheet.Group == y ,'Color'] = x

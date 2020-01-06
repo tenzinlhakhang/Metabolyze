@@ -9,12 +9,14 @@ options(java.parameters = "-Xmx8G")
 
 # relevent arguments
 
+
 library('DESeq2')
 library('stringr')
 args = commandArgs(trailingOnly=TRUE)
 
 
 counts_table_file <- args[1]
+param_threshold <- 2000000000
 
 #groups_table_file <- paste(unlist(strsplit(counts_table_file,"/"))[1],'/Inputs/Groups.csv',sep="")
 groups_table_file <- 'inputs/Groups.csv'
@@ -25,6 +27,7 @@ message(" ========== import inputs ========== ")
 
 # import counts table
 counts_table = read.csv(counts_table_file,check.names = F,row.names = 1)
+counts_table_full_list <- row.names(counts_table)
 
 message("input counts table gene num:      ", nrow(counts_table))
 message("input counts table sample num:    ", ncol(counts_table))
@@ -52,6 +55,7 @@ message("subset counts table gene num:     ", nrow(counts_table))
 message("subset counts table sample num:   ", ncol(counts_table))
 message("")
 
+
 # group info (use the first column for grouped comparisons)
 group_name = colnames(groups_table)[2]
 patient_name = colnames(groups_table)[3]
@@ -77,7 +81,14 @@ message(" ========== normalize ========== ")
 library('DESeq2')
 # import raw counts and create DESeq object
 
+
+
 counts_table_rounded <- round(counts_table)
+
+counts_table_rounded <- counts_table_rounded[!rowSums(counts_table_rounded > param_threshold),]
+
+counts_table_rounded_partial_list <- row.names(counts_table_rounded)
+
 # since v1.16 (11/2016), betaPrior is set to FALSE and shrunken LFCs are obtained afterwards using lfcShrink
 dds = DESeqDataSetFromMatrix(countData = counts_table_rounded, colData = groups_table, design = design_formula)
 dds = DESeq(dds, betaPrior = TRUE, parallel = FALSE)
@@ -135,5 +146,12 @@ for(i in group_comparisons){
 	write.csv(results_2_merged,result_2_outname)
 	}
 }
+
+excluded_met_name = paste(results_directory,'/','excluded.features.csv')
+
+list_diff <- setdiff(counts_table_full_list,counts_table_rounded_partial_list)
+list_diff <- as.data.frame(list_diff)
+write.csv(list_diff,excluded_met_name)
+
 
 message("#####  Paired Analysis Complete ####", nrow(counts_table))
