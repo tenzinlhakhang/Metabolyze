@@ -144,8 +144,9 @@ perform_pathways <- function(file){
 
 message(" ========== Performing Pathway Analysis ========== ")
 
+bar <- function(x) tryCatch(perform_pathways(x), error = function(e) e)
 
-lapply(files,perform_pathways)
+lapply(files,bar)
 
 file.remove('hsa.rda')
 file.remove('syn_nms.rds')

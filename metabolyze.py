@@ -542,7 +542,7 @@ class Analysis:
         from shutil import copyfile
         
         copyfile('inputs/Groups.csv', results_folder+'Inputs/'+'Groups.csv')
-        copyfile('inputs/skeleton_output.tsv', results_folder+'Inputs/'+'skeleton_output.tsv')
+        copyfile(self.data, results_folder+'Inputs/'+'skeleton_output.tsv')
 
         table_directory = results_folder+'Tables'
         print("resultsfolder path")
