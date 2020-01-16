@@ -585,7 +585,6 @@ class Analysis:
 
 if __name__ == "__main__":
 	skeleton_name = [x for x in os.listdir('inputs') if x.endswith('output.tsv')][0]
-
 	result = Analysis(data=skeleton_name,samplesheet='Groups.csv',blank_threshold_value=10000)
 	result.t_test()
 
