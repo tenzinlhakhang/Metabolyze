@@ -14,22 +14,19 @@ import time
 
 
 
-warnings.filterwarnings("ignore")
+#warnings.filterwarnings("ignore")
 
 #import argparse
 # parser = argparse.ArgumentParser()
 # parser.add_argument('-rn', "--rowname", nargs='?', help="Rownames for heatmaps // True or False", const=1, type=str, default='True')
 # args = parser.parse_args()
-
-    
 class Analysis:
     
-    def __init__(self, data,samplesheet):
+    def __init__(self, data,samplesheet,blank_threshold_value):
         
         self.data = 'inputs/'+data
         self.samplesheet = 'inputs/'+samplesheet
-#         self.heatmap_rowname = args.rowname
-
+        self.blank_threshold_value = blank_threshold_value
 
     def input_check(self):
         id_dict = self.get_ids('ID')
@@ -62,7 +59,10 @@ class Analysis:
         
     def dir_create(self):
         groups = pd.read_csv(self.samplesheet)
-        results_folder  = 'DME-results-'+str(len(self.get_ids('True'))) + '-Samples/'
+        if self.blank_threshold_value == 0:
+            results_folder  = 'Flux-DME-results-'+str(len(self.get_ids('True'))) + '-Samples/'
+        else:
+            results_folder  = 'DME-results-'+str(len(self.get_ids('True'))) + '-Samples/'
         sub_directories = [results_folder+ subdir for subdir in ['Volcano','Heatmap','Tables','PCA','Inputs','Pathway','Impacts']]
         sub_directories.append(results_folder)
         
@@ -144,7 +144,7 @@ class Analysis:
     def get_imputed_full_matrix(self,full_matrix,param):
         
         blank_matrix = pd.DataFrame(self.get_matrix(self.get_ids('Blank')))
-        blank_threshold = pd.DataFrame(blank_matrix.mean(axis=1)*3)+10000
+        blank_threshold = pd.DataFrame(blank_matrix.mean(axis=1)*3)+ self.blank_threshold_value
         blank_threshold['Metabolite'] = blank_threshold.index
         blank_threshold.columns = ['blank_threshold','Metabolite']
 
@@ -176,7 +176,7 @@ class Analysis:
 
 
         blank_matrix = pd.DataFrame(self.get_matrix(self.get_ids('Blank')))
-        blank_threshold = pd.DataFrame(blank_matrix.mean(axis=1)*3)+10000
+        blank_threshold = pd.DataFrame(blank_matrix.mean(axis=1)*3)+self.blank_threshold_value
         blank_threshold['Metabolite'] = blank_threshold.index
         blank_threshold.columns = ['blank_threshold','Metabolite']
 
@@ -258,7 +258,9 @@ class Analysis:
         #passing_df = detection_df.drop('Detection', 1)
     
         return(compiled_final,final)
-
+    def print_blank_threshold(self):
+        print(self.blank_threshold_value)
+		
     def dme_comparisons(self):
         
         sample_groups = self.get_groups()
@@ -319,7 +321,10 @@ class Analysis:
         standard = standard.iloc[:,0:detection_column_index]
 
         # Set directory for results folder 
-        results_folder  = 'DME-results-'+str(len(self.get_ids('True'))) + '-Samples/'
+        if self.blank_threshold_value == 0:
+            results_folder  = 'Flux-DME-results-'+str(len(self.get_ids('True'))) + '-Samples/'
+        else:
+            results_folder  = 'DME-results-'+str(len(self.get_ids('True'))) + '-Samples/'
         samplesheet.to_csv(results_folder+'Inputs/Groups.tsv')
         
         # Get full matrix of intensity values with Sequence IDS replaced with ID from Groups.csv
@@ -405,7 +410,7 @@ class Analysis:
             
             blank_matrix = pd.DataFrame(self.get_matrix(self.get_ids('Blank')))
             blank_matrix.to_csv(results_folder+'Tables/'+'blank_intensity.csv')
-            blank_threshold = pd.DataFrame(blank_matrix.mean(axis=1)*3)+10000
+            blank_threshold = pd.DataFrame(blank_matrix.mean(axis=1)*3)+self.blank_threshold_value
             blank_threshold['Metabolite'] = blank_threshold.index
             blank_threshold.columns = ['blank_threshold','Metabolite']
 
@@ -565,8 +570,9 @@ class Analysis:
 
 
         proc = sp.Popen(['python','scripts/sig.genes.py',path])
-
-
+		
+			
+			
         print("\n")
         print("\n")
         print("\n")
@@ -577,19 +583,9 @@ class Analysis:
 
 
 
-skeleton_name = [x for x in os.listdir('inputs') if x.endswith('output.tsv')][0]
+if __name__ == "__main__":
+	skeleton_name = [x for x in os.listdir('inputs') if x.endswith('output.tsv')][0]
 
-result = Analysis(data=skeleton_name,samplesheet='Groups.csv')
-result.t_test()
-
-
-
-
-
-
-
-
-
-
-
+	result = Analysis(data=skeleton_name,samplesheet='Groups.csv',blank_threshold_value=10000)
+	result.t_test()
 

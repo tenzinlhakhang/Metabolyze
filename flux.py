@@ -45,8 +45,8 @@ for x,y in total_index_zip:
     myDataFrame.append(new_final_df)
 
 
-output_name = input_matrix.split('/')[0] + '/' + input_matrix.split('/')[1] + '/'+ 'flux.output.csv'
-
+#output_name = input_matrix.split('/')[0] + '/' + input_matrix.split('/')[1] + '/'+ 'flux.output.csv'
+output_name = 'inputs/flux.output.csv'
 appended_data = pd.concat(myDataFrame, axis=0)
 appended_data = appended_data.round(2)
 

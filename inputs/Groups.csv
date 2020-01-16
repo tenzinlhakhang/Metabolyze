@@ -1,16 +1,22 @@
 File,id,Group,Color
-S07662,Control_1,Control,#FF0000
-S07663,Control_2,Control,#FF0000
-S07664,Control_3,Control,#FF0000
-S07665,Treatment_1,Treatment,#0000FF
-S07666,Treatment_2,Treatment,#0000FF
-S07667,Treatment_3,Treatment,#0000FF
-SQ452_B_0,Blank_01,Blank,NA
-SQ452_B_1,Blank_02,Blank,NA
-SQ452_B_2,Blank_03,Blank,NA
-SQ452_B_3,Blank_04,Blank,NA
-SQ452_B_4,Blank_05,Blank,NA
-SQ452_B_5,Blank_06,Blank,NA
-SQ452_ISTD_0,Standard_1,ISTD,#000000
-SQ452_ISTD_1,Standard_2,ISTD,#000000
-SQ452_ISTD_2,Standard_3,ISTD,#000000
+S06494,CH,cells,#FF0000
+S06495,Gm2pr,cells,#FF0000
+S06496,Gm1pr,cells,#FF0000
+S06497,BN1PR,cells,#FF0000
+S06498,BN2PR,cells,#FF0000
+S06499,EcmHV,cells,#FF0000
+S06500,CH media,media,#0000FF
+S06501,Gm2PR media,media,#0000FF
+S06502,Gm1PR media,media,#0000FF
+S06503,BN1PR media,media,#0000FF
+S06504,BN2PR media,media,#0000FF
+S06505,EcmHV media,media,#0000FF
+SQ400_B_0,Blank_0,Blank,NA
+SQ400_B_1,Blank_1,Blank,NA
+SQ400_B_2,Blank_2,Blank,NA
+SQ400_B_3,Blank_3,Blank,NA
+SQ400_B_4,Blank_4,Blank,NA
+SQ400_B_5,Blank_5,Blank,NA
+SQ400_ISTD_0,ISTD_0,ISTD,#000000
+SQ400_ISTD_1,ISTD_1,ISTD,#000000
+SQ400_ISTD_2,ISTD_2,ISTD,#000000
