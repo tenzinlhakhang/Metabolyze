@@ -49,6 +49,6 @@ for x,y in total_index_zip:
 output_name = 'inputs/flux.output.csv'
 appended_data = pd.concat(myDataFrame, axis=0)
 appended_data = appended_data.round(2)
-
+appended_data = appended_data.fillna(0)
 appended_data.to_csv(output_name)  
 print("Flux Analysis Complete")
