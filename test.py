@@ -493,11 +493,8 @@ class Analysis:
         
             #Generate Volcano
             print("Generating Volcano Plot: %s" %comparison_name)
-        	
-            if self.blank_threshold_value == 0:
-                proc = sp.Popen(['Rscript','scripts/volcano.plot.R',comparison_name,'True'])
-            else:
-                proc = sp.Popen(['Rscript','scripts/volcano.plot.R',comparison_name,'False'])
+            proc = sp.Popen(['Rscript','scripts/volcano.plot.R',comparison_name])
+           
             
             # Generate heatmaps
             pvalues = [str(0.05)]
@@ -553,6 +550,7 @@ class Analysis:
         copyfile(self.data, results_folder+'Inputs/'+'skeleton_output.tsv')
 
         table_directory = results_folder+'Tables'
+        print("resultsfolder path")
         
 
         print('#######')
@@ -586,7 +584,21 @@ class Analysis:
 
 
 if __name__ == "__main__":
-	skeleton_name = [x for x in os.listdir('inputs') if x.endswith('output.tsv')][0]
-	result = Analysis(data=skeleton_name,samplesheet='Groups.csv',blank_threshold_value=10000)
-	result.t_test()
+    skeleton_name = [x for x in os.listdir('inputs') if x.endswith('output.tsv')][0]
+    # 	result = Analysis(data=skeleton_name,samplesheet='Groups.csv',blank_threshold_value=10000)
+    # 	result.t_test()
+    #normalized_df=(df-df.mean())/df.std()
+    result = Analysis(data=skeleton_name,samplesheet='Groups.csv',blank_threshold_value=10000)
+    matrix = result.get_matrix(result.get_ids('All'))
+    matrix_sum_normalized = matrix.div(matrix.sum(axis=0), axis=1)
+    matrix_median_normalized = matrix.div(matrix.replace(0, np.nan).median(axis=0), axis=1)
+    matrix_median_normalized['Metabolite'] = matrix_median_normalized.index
+    matrix_median_normalized = matrix_median_normalized.reset_index(drop=True)
+    original = pd.read_csv('inputs/'+skeleton_name,sep='\t')
+    original.update(matrix_median_normalized)
+    original.to_csv('inputs/skeleton_median_normalized.tsv',sep='\t')
+
+    normalize_result = Analysis(data='skeleton_median_normalized.tsv',samplesheet='Groups.csv',blank_threshold_value=0)
+    normalize_result.t_test()
+
 

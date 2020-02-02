@@ -10,13 +10,21 @@ directory <- input_split[1]
 file_name <- input_split[3]
 
 x <- args[1]
+
+
+
 result <- read.csv(x,check.names = F)
 result <- result[!is.na(result$ttest_pval),]
 
 colnames(result)[which(names(result) == "ttest_pval")] <- "P"
 colnames(result)[which(names(result) == "Log2FoldChange")] <- "EFFECTSIZE"
 #result$EFFECTSIZE <- log2(result$EFFECTSIZE)
-volcano <- volcanoly(result, snp = "Metabolite", gene = "Formula",genomewideline = -log10(0.05),xlab = 'log2FC',ylab='-log10(p)')
+if (args[2] == 'True'){
+	volcano <- volcanoly(result, snp = "Metabolite", gene = "Formula",effect_size_line = c(-0.136, 0.136),genomewideline = -log10(0.05),xlab = 'log2FC',ylab='-log10(p)')
+} else 
+{ volcano <- volcanoly(result, snp = "Metabolite", gene = "Formula",genomewideline = -log10(0.05),xlab = 'log2FC',ylab='-log10(p)')
+
+}
 
 setwd(directory)
 setwd('Volcano')

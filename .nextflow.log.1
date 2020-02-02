@@ -1,60 +1,48 @@
-Jan-13 21:49:46.031 [main] DEBUG nextflow.cli.Launcher - $> nextflow qc.nf
-Jan-13 21:49:46.131 [main] INFO  nextflow.cli.CmdRun - N E X T F L O W  ~  version 19.10.0
-Jan-13 21:49:46.144 [main] INFO  nextflow.cli.CmdRun - Launching `qc.nf` [modest_elion] - revision: 49175e19b8
-Jan-13 21:49:46.165 [main] DEBUG nextflow.config.ConfigBuilder - Found config local: /home/ubuntu/dev/Metabolyze/nextflow.config
-Jan-13 21:49:46.166 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /home/ubuntu/dev/Metabolyze/nextflow.config
-Jan-13 21:49:46.191 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `standard`
-Jan-13 21:49:46.656 [main] DEBUG nextflow.extension.OperatorEx - Dataflow extension methods: branch,buffer,chain,choice,collate,collect,collectFile,combine,concat,count,countBy,countFasta,countFastq,countLines,countText,cross,distinct,filter,first,flatMap,flatten,fork,groupBy,groupTuple,ifEmpty,into,join,last,map,max,mean,merge,min,mix,phase,print,println,randomSample,reduce,separate,set,splitCsv,splitFasta,splitFastq,splitText,spread,subscribe,sum,take,tap,toDouble,toFloat,toInteger,toList,toLong,toSortedList,transpose,unique,until,view
-Jan-13 21:49:46.663 [main] DEBUG nextflow.Session - Session uuid: 14fa9a82-4122-4aa4-bcf3-9f9e6a53d664
-Jan-13 21:49:46.663 [main] DEBUG nextflow.Session - Run name: modest_elion
-Jan-13 21:49:46.664 [main] DEBUG nextflow.Session - Executor pool size: 2
-Jan-13 21:49:46.698 [main] DEBUG nextflow.cli.CmdRun - 
+Jan-21 02:58:41.685 [main] DEBUG nextflow.cli.Launcher - $> nextflow hybrid.nf
+Jan-21 02:58:41.800 [main] INFO  nextflow.cli.CmdRun - N E X T F L O W  ~  version 19.10.0
+Jan-21 02:58:41.811 [main] INFO  nextflow.cli.CmdRun - Launching `hybrid.nf` [adoring_ampere] - revision: 49175e19b8
+Jan-21 02:58:41.832 [main] DEBUG nextflow.config.ConfigBuilder - Found config local: /home/ubuntu/dev/Metabolyze/nextflow.config
+Jan-21 02:58:41.833 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /home/ubuntu/dev/Metabolyze/nextflow.config
+Jan-21 02:58:41.857 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `standard`
+Jan-21 02:58:42.318 [main] DEBUG nextflow.extension.OperatorEx - Dataflow extension methods: branch,buffer,chain,choice,collate,collect,collectFile,combine,concat,count,countBy,countFasta,countFastq,countLines,countText,cross,distinct,filter,first,flatMap,flatten,fork,groupBy,groupTuple,ifEmpty,into,join,last,map,max,mean,merge,min,mix,phase,print,println,randomSample,reduce,separate,set,splitCsv,splitFasta,splitFastq,splitText,spread,subscribe,sum,take,tap,toDouble,toFloat,toInteger,toList,toLong,toSortedList,transpose,unique,until,view
+Jan-21 02:58:42.325 [main] DEBUG nextflow.Session - Session uuid: 316ec0a2-ae68-4bf0-9382-71999f6a8ffb
+Jan-21 02:58:42.325 [main] DEBUG nextflow.Session - Run name: adoring_ampere
+Jan-21 02:58:42.325 [main] DEBUG nextflow.Session - Executor pool size: 2
+Jan-21 02:58:42.369 [main] DEBUG nextflow.cli.CmdRun - 
   Version: 19.10.0 build 5170
   Created: 21-10-2019 15:07 UTC 
   System: Linux 4.15.0-1054-aws
   Runtime: Groovy 2.5.8 on OpenJDK 64-Bit Server VM 11.0.5+10-post-Ubuntu-0ubuntu1.118.04
   Encoding: UTF-8 (UTF-8)
-  Process: 15088@ip-172-31-19-115 [172.31.19.115]
-  CPUs: 2 - Mem: 3.9 GB (758.1 MB) - Swap: 0 (0)
-Jan-13 21:49:46.727 [main] DEBUG nextflow.Session - Work-dir: /home/ubuntu/dev/Metabolyze/work [ext2/ext3]
-Jan-13 21:49:46.727 [main] DEBUG nextflow.Session - Script base path does not exist or is not a directory: /home/ubuntu/dev/Metabolyze/bin
-Jan-13 21:49:46.745 [main] DEBUG nextflow.Session - Observer factory: TowerFactory
-Jan-13 21:49:46.747 [main] DEBUG nextflow.Session - Observer factory: DefaultObserverFactory
-Jan-13 21:49:46.896 [main] DEBUG nextflow.Session - Session start invoked
-Jan-13 21:49:47.107 [main] DEBUG nextflow.script.ScriptRunner - > Launching execution
-Jan-13 21:49:47.160 [PathVisitor-1] DEBUG nextflow.file.PathVisitor - files for syntax: glob; folder: inputs/; pattern: *.sqlite3; options: [:]
-Jan-13 21:49:47.212 [PathVisitor-1] DEBUG nextflow.file.PathVisitor - files for syntax: glob; folder: inputs/; pattern: *.sqlite3; options: [:]
-Jan-13 21:49:47.272 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
-Jan-13 21:49:47.273 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
-Jan-13 21:49:47.278 [main] DEBUG nextflow.executor.Executor - [warm up] executor > local
-Jan-13 21:49:47.283 [main] DEBUG n.processor.LocalPollingMonitor - Creating local task monitor for executor 'local' > cpus=2; memory=3.9 GB; capacity=2; pollInterval=100ms; dumpInterval=5m
-Jan-13 21:49:47.345 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > skeleton_qc -- maxForks: 2
-Jan-13 21:49:47.380 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
-Jan-13 21:49:47.380 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
-Jan-13 21:49:47.381 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > skeleton_hybrid -- maxForks: 2
-Jan-13 21:49:47.389 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
-Jan-13 21:49:47.389 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
-Jan-13 21:49:47.390 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > skeleton_qc_cv -- maxForks: 2
-Jan-13 21:49:47.409 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
-Jan-13 21:49:47.409 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
-Jan-13 21:49:47.410 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > cv_plots -- maxForks: 2
-Jan-13 21:49:47.417 [main] DEBUG nextflow.script.BaseScript - No entry workflow defined
-Jan-13 21:49:47.418 [main] DEBUG nextflow.script.ScriptRunner - > Await termination 
-Jan-13 21:49:47.418 [main] DEBUG nextflow.Session - Session await
-Jan-13 21:49:47.609 [Task submitter] DEBUG nextflow.executor.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
-Jan-13 21:49:47.614 [Task submitter] INFO  nextflow.Session - [ad/0c0637] Submitted process > skeleton_qc (1)
-Jan-13 21:49:47.626 [Task submitter] DEBUG nextflow.executor.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
-Jan-13 21:49:47.626 [Task submitter] INFO  nextflow.Session - [d8/8201b0] Submitted process > skeleton_hybrid (1)
-Jan-13 21:49:48.073 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 2; name: skeleton_qc (1); status: COMPLETED; exit: 0; error: -; workDir: /home/ubuntu/dev/Metabolyze/work/ad/0c0637b2ca0e41503538c57cdaf8a6]
-Jan-13 21:49:48.094 [Task submitter] DEBUG nextflow.executor.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
-Jan-13 21:49:48.095 [Task submitter] INFO  nextflow.Session - [57/0fc209] Submitted process > skeleton_qc_cv (1)
-Jan-13 21:49:48.712 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 3; name: skeleton_qc_cv (1); status: COMPLETED; exit: 0; error: -; workDir: /home/ubuntu/dev/Metabolyze/work/57/0fc209ea356532315779daba56f825]
-Jan-13 21:49:48.739 [Task submitter] DEBUG nextflow.executor.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
-Jan-13 21:49:48.740 [Task submitter] INFO  nextflow.Session - [2b/09449d] Submitted process > cv_plots (1)
-Jan-13 21:49:51.078 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 1; name: skeleton_hybrid (1); status: COMPLETED; exit: 0; error: -; workDir: /home/ubuntu/dev/Metabolyze/work/d8/8201b0b9f2a60e3b8da21666754317]
-Jan-13 21:49:51.432 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 4; name: cv_plots (1); status: COMPLETED; exit: 0; error: -; workDir: /home/ubuntu/dev/Metabolyze/work/2b/09449d61a6b591b9f875904cab2016]
-Jan-13 21:49:51.438 [main] DEBUG nextflow.Session - Session await > all process finished
-Jan-13 21:49:51.531 [main] DEBUG nextflow.Session - Session await > all barriers passed
-Jan-13 21:49:51.540 [main] DEBUG nextflow.trace.StatsObserver - Workflow completed > WorkflowStats[succeedCount=4; failedCount=0; ignoredCount=0; cachedCount=0; succeedDuration=6.9s; failedDuration=0ms; cachedDuration=0ms]
-Jan-13 21:49:51.578 [main] DEBUG nextflow.CacheDB - Closing CacheDB done
-Jan-13 21:49:51.592 [main] DEBUG nextflow.script.ScriptRunner - > Execution complete -- Goodbye
+  Process: 31886@ip-172-31-19-115 [172.31.19.115]
+  CPUs: 2 - Mem: 3.9 GB (1.5 GB) - Swap: 0 (0)
+Jan-21 02:58:42.394 [main] DEBUG nextflow.Session - Work-dir: /home/ubuntu/dev/Metabolyze/work [ext2/ext3]
+Jan-21 02:58:42.395 [main] DEBUG nextflow.Session - Script base path does not exist or is not a directory: /home/ubuntu/dev/Metabolyze/bin
+Jan-21 02:58:42.413 [main] DEBUG nextflow.Session - Observer factory: TowerFactory
+Jan-21 02:58:42.415 [main] DEBUG nextflow.Session - Observer factory: DefaultObserverFactory
+Jan-21 02:58:42.587 [main] DEBUG nextflow.Session - Session start invoked
+Jan-21 02:58:42.793 [main] DEBUG nextflow.script.ScriptRunner - > Launching execution
+Jan-21 02:58:42.844 [PathVisitor-1] DEBUG nextflow.file.PathVisitor - files for syntax: glob; folder: inputs/; pattern: *.sqlite3; options: [:]
+Jan-21 02:58:42.909 [PathVisitor-1] DEBUG nextflow.file.PathVisitor - files for syntax: glob; folder: inputs/; pattern: *.sqlite3; options: [:]
+Jan-21 02:58:42.990 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jan-21 02:58:42.991 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jan-21 02:58:42.995 [main] DEBUG nextflow.executor.Executor - [warm up] executor > local
+Jan-21 02:58:43.001 [main] DEBUG n.processor.LocalPollingMonitor - Creating local task monitor for executor 'local' > cpus=2; memory=3.9 GB; capacity=2; pollInterval=100ms; dumpInterval=5m
+Jan-21 02:58:43.046 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > skeleton_qc -- maxForks: 2
+Jan-21 02:58:43.081 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jan-21 02:58:43.082 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jan-21 02:58:43.087 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > skeleton_hybrid -- maxForks: 2
+Jan-21 02:58:43.091 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jan-21 02:58:43.091 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jan-21 02:58:43.092 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > skeleton_qc_cv -- maxForks: 2
+Jan-21 02:58:43.098 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jan-21 02:58:43.098 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jan-21 02:58:43.099 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > cv_plots -- maxForks: 2
+Jan-21 02:58:43.107 [main] DEBUG nextflow.script.BaseScript - No entry workflow defined
+Jan-21 02:58:43.108 [main] DEBUG nextflow.script.ScriptRunner - > Await termination 
+Jan-21 02:58:43.108 [main] DEBUG nextflow.Session - Session await
+Jan-21 02:58:43.119 [main] DEBUG nextflow.Session - Session await > all process finished
+Jan-21 02:58:43.212 [main] DEBUG nextflow.Session - Session await > all barriers passed
+Jan-21 02:58:43.220 [main] DEBUG nextflow.trace.StatsObserver - Workflow completed > WorkflowStats[succeedCount=0; failedCount=0; ignoredCount=0; cachedCount=0; succeedDuration=0ms; failedDuration=0ms; cachedDuration=0ms]
+Jan-21 02:58:43.421 [main] DEBUG nextflow.CacheDB - Closing CacheDB done
+Jan-21 02:58:43.435 [main] DEBUG nextflow.script.ScriptRunner - > Execution complete -- Goodbye

@@ -1,2 +1,4 @@
 2020-01-13 21:49:46	5.6s	modest_elion	OK	49175e19b84d09d30384fe52ca845994	14fa9a82-4122-4aa4-bcf3-9f9e6a53d664	nextflow qc.nf
 2020-01-14 16:47:30	1.3s	sad_leavitt	OK	49175e19b84d09d30384fe52ca845994	6d09be94-3436-43d4-b9db-1a360ed8fa5c	nextflow hybrid.nf
+2020-01-21 02:58:42	1.4s	adoring_ampere	OK	49175e19b84d09d30384fe52ca845994	316ec0a2-ae68-4bf0-9382-71999f6a8ffb	nextflow hybrid.nf
+2020-01-21 03:00:08	1.5s	happy_shirley	ERR	fd01deceb0da4ef9706bee5ac8661d09	018e77cc-28c8-445c-ada2-2fa81c239785	nextflow ungrid.nf

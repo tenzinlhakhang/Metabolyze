@@ -1,0 +1,5 @@
+Starting the mega-query...
+Traceback (most recent call last):
+  File "/home/ubuntu/dev/Metabolyze/scripts/ungrid.py", line 90, in <module>
+    all_peaks = list(cur.execute(PEAK_SQL, (MIN_SIGNAL,)))
+sqlite3.OperationalError: no such table: ms1_peaks
