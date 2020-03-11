@@ -22,11 +22,12 @@ import time
 # args = parser.parse_args()
 class Analysis:
     
-    def __init__(self, data,samplesheet,blank_threshold_value):
+    def __init__(self, data,samplesheet,blank_threshold_value,method):
         
         self.data = 'inputs/'+data
         self.samplesheet = 'inputs/'+samplesheet
         self.blank_threshold_value = blank_threshold_value
+        self.method = method
 
     def input_check(self):
         id_dict = self.get_ids('ID')
@@ -59,10 +60,15 @@ class Analysis:
         
     def dir_create(self):
         groups = pd.read_csv(self.samplesheet)
-        if self.blank_threshold_value == 0:
+        if self.method == 'flux':
             results_folder  = 'Flux-DME-results-'+str(len(self.get_ids('True'))) + '-Samples/'
-        else:
+        if self.method == 'sum':
+            results_folder  = 'Sum-DME-results-'+str(len(self.get_ids('True'))) + '-Samples/'
+        if self.method == 'median':
+            results_folder  = 'Median-DME-results-'+str(len(self.get_ids('True'))) + '-Samples/'
+        if self.method == 'default':
             results_folder  = 'DME-results-'+str(len(self.get_ids('True'))) + '-Samples/'
+
         sub_directories = [results_folder+ subdir for subdir in ['Volcano','Heatmap','Tables','PCA','Inputs','Pathway','Impacts']]
         sub_directories.append(results_folder)
         
@@ -95,25 +101,25 @@ class Analysis:
         
         # Get all sequence IDS (xml ids) from Groups.csv
         if full == 'True':
-            project = pd.read_csv(self.samplesheet)
+            project = pd.read_table('inputs/Groups.tsv',sep='\t')
             project = project.loc[project['Group'] != 'Blank']
             all_samples = [x.split('.')[0] for x in project['File'].tolist()]
             return(all_samples)
         
         if full == 'Sample':
-            project = pd.read_csv(self.samplesheet)
+            project = pd.read_csv('inputs/Groups.tsv',sep='\t')
             project = project.loc[project['Group'] != 'Blank']
             all_samples = [x.split('.')[0] for x in project['id'].tolist()]
             return(all_samples)
         
         # Get all blank IDS from skeleton output matrix
         if full == 'Blank':
-            project = pd.read_csv(self.samplesheet)
+            project = pd.read_csv('inputs/Groups.tsv',sep='\t')
             project = project.loc[project['Group'] == 'Blank']
             all_samples = [x.split('.')[0] for x in project['File'].tolist()]
             return (list(all_samples))
         if full == 'ID':
-            project = pd.read_csv(self.samplesheet)
+            project = pd.read_csv('inputs/Groups.tsv',sep='\t')
             grouped_samples = {}
             
             for condition in (project.id.unique()):
@@ -321,10 +327,15 @@ class Analysis:
         standard = standard.iloc[:,0:detection_column_index]
 
         # Set directory for results folder 
-        if self.blank_threshold_value == 0:
+        if self.method == 'flux':
             results_folder  = 'Flux-DME-results-'+str(len(self.get_ids('True'))) + '-Samples/'
-        else:
+        if self.method == 'sum':
+            results_folder  = 'Sum-DME-results-'+str(len(self.get_ids('True'))) + '-Samples/'
+        if self.method == 'median':
+            results_folder  = 'Median-DME-results-'+str(len(self.get_ids('True'))) + '-Samples/'
+        if self.method == 'default':
             results_folder  = 'DME-results-'+str(len(self.get_ids('True'))) + '-Samples/'
+
         samplesheet.to_csv(results_folder+'Inputs/Groups.tsv')
         
         # Get full matrix of intensity values with Sequence IDS replaced with ID from Groups.csv
@@ -550,7 +561,7 @@ class Analysis:
         from shutil import copyfile
         
         copyfile('inputs/Groups.csv', results_folder+'Inputs/'+'Groups.csv')
-        copyfile(self.data, results_folder+'Inputs/'+'skeleton_output.tsv')
+        copyfile(self.data, results_folder+'Inputs/'+self.data.split('/')[1])
 
         table_directory = results_folder+'Tables'
         
@@ -587,6 +598,6 @@ class Analysis:
 
 if __name__ == "__main__":
 	skeleton_name = [x for x in os.listdir('inputs') if x.endswith('output.tsv')][0]
-	result = Analysis(data=skeleton_name,samplesheet='Groups.csv',blank_threshold_value=10000)
+	result = Analysis(data=skeleton_name,samplesheet='Groups.csv',blank_threshold_value=10000,method='default')
 	result.t_test()
 

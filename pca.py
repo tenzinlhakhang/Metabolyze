@@ -28,7 +28,6 @@ from itertools import combinations
 from matplotlib import rcParams
 rcParams['pdf.fonttype'] = 42 ## Output Type 3 (Type3) or Type 42 (TrueType)
 rcParams['font.sans-serif'] = 'Arial'
-
 import sys
 matrix_path = sys.argv[1]
 groups_path = sys.argv[2]
@@ -128,14 +127,19 @@ def main_plot():
 	expr_df.index = expr_df['Metabolite']
 	del expr_df['Metabolite']
 	expr_df = expr_df.astype(float)
+	
 
-	variance_explained, pca_transformed = perform_PCA(expr_df.values, standardize=2, log=True)
+
 	meta_df = pd.read_csv(groups_path)
 	meta_df = meta_df.loc[meta_df['Group'] != 'Blank']
 	
 	meta_df['File'].str.replace('.mzXML','')
-
+	
 	meta_df.index = meta_df['id']
+	expr_df = expr_df.reindex(columns=meta_df['File'].tolist())
+
+	variance_explained, pca_transformed = perform_PCA(expr_df.values, standardize=2, log=True)
+
 	print(meta_df)
 	meta_df['x'] = pca_transformed[:,0]
 	meta_df['y'] = pca_transformed[:,1]
@@ -170,6 +174,7 @@ def main_plot():
 	    )
 	    
 	    data.append(trace)
+	    
 
 	# Configs for layout and axes
 	layout=dict(height=1000, width=1200, 
@@ -182,9 +187,8 @@ def main_plot():
 	)
 	fig=dict(data=data, layout=layout)
 
-	#py.iplot(fig, filename='simple-3d-scatter')
 
 	plotly.offline.plot(fig, filename=str(pca_name))
-
+	#fig.write_image("images/fig1.pdf")
 main_plot()
 #plotly.offline.iplot(fig)

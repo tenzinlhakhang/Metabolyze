@@ -141,33 +141,41 @@ class Analysis:
         matrix = (skeleton_outbut_hybrid[skeleton_outbut_hybrid.columns.intersection(ids)])
         return (matrix)
     
-    def get_imputed_full_matrix(self,full_matrix,param):
+    def get_threshold_bool_matrix(self,matrix,ids):
+
+        matrix = (matrix[skeleton_outbut_hybrid.columns.intersection(ids)])
         
-        blank_matrix = pd.DataFrame(self.get_matrix(self.get_ids('Blank')))
-        blank_threshold = pd.DataFrame(blank_matrix.mean(axis=1)*3)+ self.blank_threshold_value
-        blank_threshold['Metabolite'] = blank_threshold.index
-        blank_threshold.columns = ['blank_threshold','Metabolite']
+        return (matrix)
+    
+    
+#old
+#     def get_imputed_full_matrix(self,full_matrix,param):
+        
+#         blank_matrix = pd.DataFrame(self.get_matrix(self.get_ids('Blank')))
+#         blank_threshold = pd.DataFrame(blank_matrix.mean(axis=1)*3)+ self.blank_threshold_value
+#         blank_threshold['Metabolite'] = blank_threshold.index
+#         blank_threshold.columns = ['blank_threshold','Metabolite']
 
 
-        test_dictionary = {}
-        for index, row in full_matrix.iterrows():
-            test_list = []
-    #print(index)
-            for val in row:
-                blankthresh = blank_threshold.loc[index, ['blank_threshold']][0]
-                if val < blankthresh:
-                    if param == 'detected':
-                        test_list.append(blankthresh)
-                    if param == 'corrected':
-                        test_list.append(0)
-                else:
-                    test_list.append(val)
-            test_dictionary[index] = test_list
+#         test_dictionary = {}
+#         for index, row in full_matrix.iterrows():
+#             test_list = []
+#     #print(index)
+#             for val in row:
+#                 blankthresh = blank_threshold.loc[index, ['blank_threshold']][0]
+#                 if val < blankthresh:
+#                     if param == 'detected':
+#                         test_list.append(blankthresh)
+#                     if param == 'corrected':
+#                         test_list.append(0)
+#                 else:
+#                     test_list.append(val)
+#             test_dictionary[index] = test_list
 
-        df_test = (pd.DataFrame.from_dict(test_dictionary))
-        final = df_test.transpose()
-        final.columns = list(full_matrix)
-        return(final)
+#         df_test = (pd.DataFrame.from_dict(test_dictionary))
+#         final = df_test.transpose()
+#         final.columns = list(full_matrix)
+#         return(final)
 
      
 
@@ -258,9 +266,29 @@ class Analysis:
         #passing_df = detection_df.drop('Detection', 1)
     
         return(compiled_final,final)
+    
     def print_blank_threshold(self):
         print(self.blank_threshold_value)
-		
+        
+    def get_imputed_full_matrix(self,full_matrix,param):
+
+        blank_matrix = pd.DataFrame(result.get_matrix(result.get_ids('Blank')))
+        blank_threshold = pd.DataFrame(blank_matrix.mean(axis=1)*3)+ result.blank_threshold_value
+        blank_threshold['Metabolite'] = blank_threshold.index
+        blank_threshold.columns = ['blank_threshold','Metabolite']
+
+        #full_matrix = full_matrix.head()
+
+        test_dictionary = {}
+        for index, row in full_matrix.iterrows():
+            blankthresh = blank_threshold.loc[index, ['blank_threshold']][0]
+            imputed = [0 if i <= blankthresh else i for i in row]
+            test_dictionary[index] = imputed
+            #print("\n")
+        df = self.sequence2id(pd.DataFrame(test_dictionary,index=full_matrix.columns).transpose())
+
+        return(df)
+
     def dme_comparisons(self):
         
         sample_groups = self.get_groups()
@@ -334,7 +362,8 @@ class Analysis:
         detected_matrix_name = results_folder+'Tables/'+'Intensity.detected.values.csv'
         full_matrix.to_csv(full_matrix_name)
         
-        corrected_matrix = self.sequence2id(self.get_imputed_full_matrix(self.get_matrix(ids=self.get_ids('True')),param        ='corrected'))
+        # Get corrected matrix
+        corrected_matrix = self.sequence2id(self.get_imputed_full_matrix(self.get_matrix(ids=self.get_ids('True')),param='corrected'))
         corrected_matrix.index.name = 'Metabolite'
         corrected_matrix.to_csv(results_folder+'Tables/'+'Intensity.corrected.values.csv')
         
@@ -359,7 +388,6 @@ class Analysis:
             
 
             samplesheet_comparison = samplesheet.loc[samplesheet['File'].isin(sample_ids)]
-            
             samplesheet_comparison_name = results_folder+'PCA/samplesheet.csv'
             samplesheet_comparison.to_csv(samplesheet_comparison_name)
             
@@ -393,21 +421,6 @@ class Analysis:
             ### Calculate Pearson Correlation 
 
 
-            def get_correlation(matrix,group):
-
-                temp_pearson_dict ={}
-                cov = samplesheet.loc[samplesheet['Group'] == group]['Covariate']
-
-                for row in matrix.iterrows():
-                    index, data = row
-
-                    pearson_correl = np.corrcoef(data, cov)[0, 1]
-                    temp_pearson_dict[index] = pearson_correl
-
-                pearson_df = pd.DataFrame([temp_pearson_dict]).T
-                pearson_df.columns = [group]
-                return(pearson_df)
-            
             blank_matrix = pd.DataFrame(self.get_matrix(self.get_ids('Blank')))
             blank_matrix.to_csv(results_folder+'Tables/'+'blank_intensity.csv')
             blank_threshold = pd.DataFrame(blank_matrix.mean(axis=1)*3)+self.blank_threshold_value
@@ -459,6 +472,9 @@ class Analysis:
             comparison_matrix = group_1_df.join(group_2_df, how='outer')
             
             
+            
+            ### OPTIMIZE THIS CODE
+            
             for index, row in comparison_matrix.iterrows():
                 test_list = []
                 #print (row)
@@ -493,8 +509,11 @@ class Analysis:
         
             #Generate Volcano
             print("Generating Volcano Plot: %s" %comparison_name)
-            proc = sp.Popen(['Rscript','scripts/volcano.plot.R',comparison_name])
-           
+        	
+            if self.blank_threshold_value == 0:
+                proc = sp.Popen(['Rscript','scripts/volcano.plot.R',comparison_name,'True'])
+            else:
+                proc = sp.Popen(['Rscript','scripts/volcano.plot.R',comparison_name,'False'])
             
             # Generate heatmaps
             pvalues = [str(0.05)]
@@ -536,6 +555,8 @@ class Analysis:
         #imputed_intensities = imputed_intensities.rename(columns={ imputed_intensities.columns[0]: "Metabolite" })
     
         imputed_intensities.to_csv(results_folder+'Tables/'+'Intensity.detected.values.csv')
+        
+        
         print("Generating Full Heatmap")
         proc = sp.Popen(['Rscript','scripts/heatmap.full.R',full_matrix_name,'nonimputed'])
         proc = sp.Popen(['Rscript','scripts/heatmap.full.R',detected_matrix_name,'imputed'])
@@ -550,7 +571,6 @@ class Analysis:
         copyfile(self.data, results_folder+'Inputs/'+'skeleton_output.tsv')
 
         table_directory = results_folder+'Tables'
-        print("resultsfolder path")
         
 
         print('#######')
@@ -563,13 +583,13 @@ class Analysis:
         if 'Feature' in str(final_df_m['Metabolite'].tolist()[2]):
             print('Unsuitable Metabolite Names for Pathway Analysis')
         else:
-            proc = sp.Popen(['Rscript','scripts/pathway.R',path,output_path])
+            proc = sp.call(['Rscript','scripts/pathway.R',path,output_path])
 #                 time.sleep(2)
         impact_folder = results_folder + 'Tables/dme.compiled.csv'
-        proc = sp.Popen(['python','scripts/impact.correlation.py', impact_folder])
+        proc = sp.call(['python','scripts/impact.correlation.py', impact_folder])
 
 
-        proc = sp.Popen(['python','scripts/sig.genes.py',path])
+        proc = sp.call(['python','scripts/sig.genes.py',path])
 		
 			
 			
@@ -585,20 +605,7 @@ class Analysis:
 
 if __name__ == "__main__":
     skeleton_name = [x for x in os.listdir('inputs') if x.endswith('output.tsv')][0]
-    # 	result = Analysis(data=skeleton_name,samplesheet='Groups.csv',blank_threshold_value=10000)
-    # 	result.t_test()
-    #normalized_df=(df-df.mean())/df.std()
-    result = Analysis(data=skeleton_name,samplesheet='Groups.csv',blank_threshold_value=10000)
-    matrix = result.get_matrix(result.get_ids('All'))
-    matrix_sum_normalized = matrix.div(matrix.sum(axis=0), axis=1)
-    matrix_median_normalized = matrix.div(matrix.replace(0, np.nan).median(axis=0), axis=1)
-    matrix_median_normalized['Metabolite'] = matrix_median_normalized.index
-    matrix_median_normalized = matrix_median_normalized.reset_index(drop=True)
-    original = pd.read_csv('inputs/'+skeleton_name,sep='\t')
-    original.update(matrix_median_normalized)
-    original.to_csv('inputs/skeleton_median_normalized.tsv',sep='\t')
-
-    normalize_result = Analysis(data='skeleton_median_normalized.tsv',samplesheet='Groups.csv',blank_threshold_value=0)
-    normalize_result.t_test()
+	result = Analysis(data=skeleton_name,samplesheet='Groups.csv',blank_threshold_value=10000)
+	result.t_test()
 
 

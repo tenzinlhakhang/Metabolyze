@@ -44,7 +44,7 @@ merged_2['Metabolite'] = merged_2['Metabolite'].str.replace('-13C-0', '')
 merged_2.to_csv('inputs/flux_skeleton_output.tsv',sep='\t')
 
 
-flux_result = met.Analysis(data='flux_skeleton_output.tsv',samplesheet='Groups.csv',blank_threshold_value=0)
+flux_result = met.Analysis(data='flux_skeleton_output.tsv',samplesheet='Groups.csv',blank_threshold_value=0,method='flux')
 flux_result.t_test()
 
 
