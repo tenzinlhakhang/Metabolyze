@@ -136,7 +136,7 @@ def main_plot():
 	meta_df['File'].str.replace('.mzXML','')
 	
 	meta_df.index = meta_df['id']
-	expr_df = expr_df.reindex(columns=meta_df['File'].tolist())
+	expr_df = expr_df.reindex(columns=meta_df['id'].tolist())
 
 	variance_explained, pca_transformed = perform_PCA(expr_df.values, standardize=2, log=True)
 

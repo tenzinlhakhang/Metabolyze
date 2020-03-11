@@ -384,6 +384,8 @@ class Analysis:
             pca_matrix =  reduce(lambda left,right: pd.merge(left,right,left_index=True, right_index=True), matrices)
             #pca_matrix = pd.DataFrame(pca_matrix).set_index('Metabolite')
             pca_matrix.index.name = 'Metabolite'
+
+            pca_matrix = self.sequence2id(pca_matrix)
             comparison_pca_name = (results_folder+'PCA/'+comparison[0]+'_vs_'+comparison[1]+'_PCA.html').replace(" ", "")
             comparison_pca = results_folder+'PCA/PCA_matrix.csv'
             
