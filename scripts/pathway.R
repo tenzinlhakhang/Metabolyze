@@ -1,9 +1,9 @@
-library('MetaboAnalystR',quietly = TRUE)
-library('filesstrings',quietly = TRUE)
+suppressMessages(library('MetaboAnalystR',quietly = TRUE))
+suppressMessages(library('filesstrings',quietly = TRUE))
 args = commandArgs(trailingOnly=TRUE)
-library('pathview')
-library(tidyr)
-library(dplyr)
+suppressMessages(library('pathview'))
+suppressMessages(library('tidyr'))
+suppressMessages(library('dplyr'))
 
 
 setwd(args[1])
@@ -34,13 +34,14 @@ full_mSet<-SetKEGG.PathLib(full_mSet, "hsa",lib.version='current')
 # Set the metabolite filter
 full_mSet<-SetMetabolomeFilter(full_mSet, F);
 
-kegg_compounds <- print.data.frame(data.frame(full_mSet$dataSet$map.table), 
-                                   quote=FALSE)
+# kegg_compounds <- print.data.frame(data.frame(full_mSet$dataSet$map.table), 
+#                                    quote=FALSE)
+kegg_compounds <- as.data.frame(full_mSet$dataSet$map.table)
 colnames(kegg_compounds)[2] <- 'Metabolite'
 
 
 kegg_compounds <- kegg_compounds[!(is.na(kegg_compounds$KEGG) | kegg_compounds$KEGG==""), ]
-
+kegg_compounds <- kegg_compounds[!duplicated(kegg_compounds$KEGG),]
 
 ### get kegg pathway name from hsa id
 

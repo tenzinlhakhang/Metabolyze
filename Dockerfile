@@ -1,10 +1,15 @@
 FROM ubuntu:latest
-COPY . /app
-WORKDIR /app
-RUN apt-get update && apt-get install -y r-base
+COPY . /Metabolyze
+WORKDIR /Metabolyze
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+
+
 RUN set -e; \
     apt-get update && apt-get install -y \
-    r-base \
+    software-properties-common \
+    tzdata \
     linux-headers-generic \
     pkg-config \
     python3-pip \
@@ -18,15 +23,16 @@ RUN set -e; \
     libxml2-dev \
     libxslt-dev \
         ;
+
+RUN add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu disco-cran35/'
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+RUN apt-get install r-base
+
 RUN python3 -m pip install -r requirements.txt
 
 RUN R -e "install.packages('pheatmap',dependencies=TRUE, repos='http://cran.rstudio.com/')"
 RUN R -e "install.packages('manhattanly',dependencies=TRUE, repos='http://cran.rstudio.com/')"
 
 
-
-
-EXPOSE 5000
-CMD python3 ./metabolyze.py
-
+RUN alias python=python3
 

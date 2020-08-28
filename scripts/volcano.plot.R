@@ -1,4 +1,4 @@
-library('manhattanly',quietly=TRUE,warn.conflicts = FALSE)
+suppressMessages(library('manhattanly',quietly=TRUE,warn.conflicts = FALSE))
 
 args = commandArgs(trailingOnly=TRUE)
 
@@ -6,14 +6,11 @@ input_split <- strsplit(args[1], "\\/")[[1]]
 # Create environment variables
 
 directory <- input_split[1]
-
 file_name <- input_split[3]
-
-x <- args[1]
-
+input_csv <- args[1]
 
 
-result <- read.csv(x,check.names = F)
+result <- read.csv(input_csv,check.names = F)
 result <- result[!is.na(result$ttest_pval),]
 
 colnames(result)[which(names(result) == "ttest_pval")] <- "P"

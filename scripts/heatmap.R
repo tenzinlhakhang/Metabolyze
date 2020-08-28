@@ -7,10 +7,10 @@
 #new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 #if(length(new.packages)) install.packages(new.packages)
 
-library('pheatmap',quietly=TRUE,warn.conflicts = FALSE)
 
+suppressMessages(library('pheatmap',quietly=TRUE,warn.conflicts = FALSE))
+suppressMessages(library(dplyr,quietly=TRUE,warn.conflicts=FALSE))
 args = commandArgs(trailingOnly=TRUE)
-
 
 # Generate Heatmap for each corrected comparison using different pvalue cutoffs
 comparison <- args[1]
@@ -76,11 +76,11 @@ heatmap <- function(comparison,pvalue,param){
   counts$Metabolite <- NULL
   
   
-  x=apply( counts, 1, sd ) 
-  df =as.data.frame(x)
+  std =apply( counts, 1, sd ) 
+  df =as.data.frame(std)
   df$gene = row.names(df)
   
-  datasetnew <- df[df$x>0,]
+  datasetnew <- df[df$std>0,]
   colnames(datasetnew) <- c('std','metabolite')
   
   counts$metabolite <- row.names(counts)
@@ -109,7 +109,7 @@ heatmap <- function(comparison,pvalue,param){
   pdf(pdf_name)
   
 
-  if (nrow(merged) > 200){row_name_toggle <- FALSE} else { row_name_toggle <- TRUE}
+  if (nrow(merged) > 200){row_name_toggle <- FALSE} else { row_name_toggle <- FALSE}
   pheatmap(as.matrix(merged), color = cell_colors,
            border_color = NA,show_rownames = row_name_toggle,fontsize = 6, 
            scale = "row", cluster_rows = T, annotation_colors = ann_color,
@@ -128,7 +128,6 @@ heatmap <- function(comparison,pvalue,param){
   full_counts_path = gsub(" ", "", full_counts_path, fixed = TRUE)
   full_counts = read.csv(full_counts_path,check.names=FALSE)
   
-  library(dplyr,quietly=TRUE,warn.conflicts=FALSE)
   
   full_counts <- full_counts %>% filter(Metabolite %in% metabolites_sig)
   row.names(full_counts) <- full_counts$Metabolite
@@ -151,7 +150,7 @@ heatmap <- function(comparison,pvalue,param){
     pdf_name_full = gsub(" ", "", pdf_name_full, fixed = TRUE)
     pdf(pdf_name_full)
     # two group heatmap
-    if (nrow(full_counts) > 200){row_name_toggle <- FALSE} else { row_name_toggle <- TRUE}
+    if (nrow(full_counts) > 200){row_name_toggle <- FALSE} else { row_name_toggle <- FALSE}
     pheatmap(full_counts, color = cell_colors,
              border_color = NA,show_rownames = row_name_toggle,fontsize = 6, 
              scale = "row", cluster_rows = T,annotation_colors = ann_color,

@@ -7,7 +7,7 @@ sink("/dev/null")
 #new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 #if(length(new.packages)) install.packages(new.packages)
 
-library('pheatmap',quietly=TRUE,warn.conflicts = FALSE)
+suppressMessages(library('pheatmap',quietly=TRUE,warn.conflicts = FALSE))
 
 args = commandArgs(trailingOnly=TRUE)
 
@@ -23,12 +23,12 @@ full_counts <- read.csv((args[1]),check.names=FALSE)
 row.names(full_counts) <- full_counts$Metabolite
 full_counts$Metabolite <- NULL
 
-x=apply( full_counts, 1, sd ) 
-df =as.data.frame(x)
+std=apply( full_counts, 1, sd ) 
+df =as.data.frame(std)
 df$gene = row.names(df)
 head(df)
 
-datasetnew <- df[df$x>0,]
+datasetnew <- df[df$std>0,]
 colnames(datasetnew) <- c('std','metabolite')
 
 full_counts$metabolite <- row.names(full_counts)
@@ -79,8 +79,7 @@ title.string <- as.character(args[2])
 pdf_name = paste(directory,'/Heatmap/plot.heatmap.expressed.metabolite.',title.string, '.',title,'.pdf')
 pdf_name = gsub(" ", "", pdf_name, fixed = TRUE)
 pdf(pdf_name)
-library('pheatmap')
-if (nrow(merged) > 200){row_name_toggle <- FALSE} else { row_name_toggle <- TRUE}
+if (nrow(merged) > 200){row_name_toggle <- FALSE} else { row_name_toggle <- FALSE}
 pheatmap(as.matrix(merged), color = cell_colors,
          border_color = NA,show_rownames=row_name_toggle,fontsize = 6, 
          scale = "row", cluster_rows = T,annotation_colors = ann_color,

@@ -1,0 +1,32 @@
+"","Total","Expected","Hits","Raw p","-log(p)","Holm adjust","FDR","Impact"
+"Histidine metabolism",16,0.97032,4,0.013139,4.3322,1,1,0.31147
+"Citrate cycle (TCA cycle)",20,1.2129,3,0.11656,2.1494,1,1,0.12618
+"Neomycin, kanamycin and gentamicin biosynthesis",2,0.12129,1,0.11765,2.14,1,1,0
+"Pyruvate metabolism",22,1.3342,3,0.14454,1.9342,1,1,0.29082
+"Arginine biosynthesis",14,0.84903,2,0.20669,1.5766,1,1,0.07614
+"D-Arginine and D-ornithine metabolism",4,0.24258,1,0.22159,1.5069,1,1,0
+"Glyoxylate and dicarboxylate metabolism",32,1.9406,3,0.3063,1.1832,1,1,0.12963
+"D-Glutamine and D-glutamate metabolism",6,0.36387,1,0.3134,1.1603,1,1,0
+"beta-Alanine metabolism",21,1.2735,2,0.36731,1.0015,1,1,0.05597
+"Taurine and hypotaurine metabolism",8,0.48516,1,0.39448,0.93019,1,1,0.28571
+"Vitamin B6 metabolism",9,0.54581,1,0.43139,0.84074,1,1,0.07843
+"Folate biosynthesis",27,1.6374,2,0.49509,0.70301,1,1,0
+"Alanine, aspartate and glutamate metabolism",28,1.6981,2,0.51481,0.66395,1,1,0.0024
+"Glutathione metabolism",28,1.6981,2,0.51481,0.66395,1,1,0.34469
+"Purine metabolism",65,3.9419,4,0.56483,0.57124,1,1,0.21289
+"Aminoacyl-tRNA biosynthesis",48,2.911,3,0.56634,0.56856,1,1,0
+"Glycine, serine and threonine metabolism",33,2.0013,2,0.60564,0.50147,1,1,0.24577
+"Butanoate metabolism",15,0.90968,1,0.61048,0.49352,1,1,0
+"Nicotinate and nicotinamide metabolism",15,0.90968,1,0.61048,0.49352,1,1,0.1943
+"Glycerophospholipid metabolism",36,2.1832,2,0.65375,0.42503,1,1,0.0336
+"Starch and sucrose metabolism",18,1.0916,1,0.67779,0.38892,1,1,0.13851
+"Arginine and proline metabolism",38,2.3045,2,0.68319,0.38098,1,1,0.05786
+"Tryptophan metabolism",41,2.4865,2,0.72352,0.32362,1,1,0.00202
+"Sphingolipid metabolism",21,1.2735,1,0.73357,0.30984,1,1,0.0142
+"Tyrosine metabolism",42,2.5471,2,0.73598,0.30655,1,1,0.02463
+"Glycolysis / Gluconeogenesis",26,1.5768,1,0.80608,0.21557,1,1,0.10044
+"Inositol phosphate metabolism",30,1.8194,1,0.84971,0.16285,1,1,0
+"Porphyrin and chlorophyll metabolism",30,1.8194,1,0.84971,0.16285,1,1,0
+"Cysteine and methionine metabolism",33,2.0013,1,0.87592,0.13248,1,1,0
+"Pyrimidine metabolism",39,2.3652,1,0.91553,0.088256,1,1,0.00439
+"Primary bile acid biosynthesis",46,2.7897,1,0.94617,0.055337,1,1,0.00758

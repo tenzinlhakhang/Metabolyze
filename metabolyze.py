@@ -11,6 +11,8 @@ import subprocess as sp
 import os
 import sys
 import time
+import warnings
+warnings.filterwarnings("ignore")
 
 
 
@@ -301,7 +303,7 @@ class Analysis:
         print("Pipeline executed:")
         samplesheet = pd.read_csv("inputs/Groups.tsv",sep='\t')
         samplesheet['Color'] = 'NA'
-        colors = ['#FF0000','#0000FF','#000000','#008000','#FFFF00','#800080','#FFC0CB',"#c0feff","#5b2d8c","#7f8c2d"]
+        colors = ['#FF0000','#0000FF','#000000','#008000','#FFFF00','#800080','#FFC0CB',"#c0feff","#5b2d8c","#7f8c2d","#F1948A","#BB8FCE","#AED6F1","#A3E4D7","#F7DC6F","#DC7633","#5D6D7E","#7B7D7D"]
         zipped_up = zip(colors,list(self.get_groups().keys()))
         for x,y in zipped_up:
             samplesheet.loc[samplesheet.Group == y ,'Color'] = x
@@ -336,9 +338,17 @@ class Analysis:
         if self.method == 'default':
             results_folder  = 'DME-results-'+str(len(self.get_ids('True'))) + '-Samples/'
 
-        samplesheet.to_csv(results_folder+'Inputs/Groups.tsv')
+        samplesheet.to_csv(results_folder+'Inputs/Groups.tsv',sep='\t',index=False)
         
+
+        # Get all sample matrix
+
+        all_matrix = self.get_matrix(self.get_ids(full='All'))
+        all_matrix = self.sequence2id(all_matrix)
+        all_matrix.to_csv(results_folder+'Tables/Intensity.values.all.csv')
         # Get full matrix of intensity values with Sequence IDS replaced with ID from Groups.csv
+
+
         full_matrix = self.get_matrix(self.get_ids(full='True'))
         full_matrix = self.sequence2id(full_matrix)
         full_matrix_name = results_folder+'Tables/'+'Intensity.values.csv'
@@ -374,7 +384,6 @@ class Analysis:
             samplesheet_comparison_name = results_folder+'PCA/samplesheet.csv'
             samplesheet_comparison.to_csv(samplesheet_comparison_name)
             
-            print("PCASAMPLESHEET",samplesheet_comparison)
             #print ((matrices.shape())
             group_sample_number =  int((matrices[0].shape)[1])
             group_sample_number_2 = int(group_sample_number+ ((matrices[1].shape)[1]))
@@ -392,7 +401,16 @@ class Analysis:
             
             pca_matrix.to_csv(comparison_pca)
             
-            proc = sp.Popen(['python','-W ignore','pca.py',comparison_pca,samplesheet_comparison_name,comparison_pca_name])
+            
+            proc = sp.Popen(['python3','-W ignore','pca.py',comparison_pca,samplesheet_comparison_name,comparison_pca_name])
+            lol = pd.read_csv(comparison_pca)
+            lol.to_csv(comparison_pca_name+'_matrix.csv')
+            
+            lol2 = pd.read_csv(samplesheet_comparison_name)
+            lol2.to_csv(comparison_pca_name+'_samplesheet.csv')
+            
+            #samplesheet_comparison_name.to_csv(samplesheet_comparison_name)
+            
             matrices.append(pd.DataFrame(self.get_matrix(self.get_ids(full='Blank'))))
             df_m = reduce(lambda left,right: pd.merge(left,right,left_index=True, right_index=True), matrices)
 #             print(df_m.head())                  
@@ -507,7 +525,7 @@ class Analysis:
             #Generate Volcano
             print("Generating Volcano Plot: %s" %comparison_name)
         	
-            if self.blank_threshold_value == 0:
+            if self.method == 'default':
                 proc = sp.Popen(['Rscript','scripts/volcano.plot.R',comparison_name,'True'])
             else:
                 proc = sp.Popen(['Rscript','scripts/volcano.plot.R',comparison_name,'False'])
@@ -555,14 +573,14 @@ class Analysis:
         print("Generating Full Heatmap")
         proc = sp.Popen(['Rscript','scripts/heatmap.full.R',full_matrix_name,'nonimputed'])
         proc = sp.Popen(['Rscript','scripts/heatmap.full.R',detected_matrix_name,'imputed'])
-        proc = sp.Popen(['python','-W ignore','pca.py',detected_matrix_name,self.samplesheet,(results_folder+'PCA/'+'PCA.full.html')])
+        proc = sp.Popen(['python3','-W ignore','pca.py',detected_matrix_name,self.samplesheet,(results_folder+'PCA/'+'PCA.full.html')])
 
         os.remove(comparison_pca)
         os.remove(samplesheet_comparison_name)
         
         from shutil import copyfile
         
-        copyfile('inputs/Groups.csv', results_folder+'Inputs/'+'Groups.csv')
+        
         copyfile(self.data, results_folder+'Inputs/'+self.data.split('/')[1])
 
         table_directory = results_folder+'Tables'
@@ -581,11 +599,12 @@ class Analysis:
             proc = sp.Popen(['Rscript','scripts/pathway.R',path,output_path])
 #                 time.sleep(2)
         impact_folder = results_folder + 'Tables/dme.compiled.csv'
-        proc = sp.Popen(['python','scripts/impact.correlation.py', impact_folder])
+        proc = sp.Popen(['python3','scripts/impact.correlation.py', impact_folder])
 
 
-        proc = sp.Popen(['python','scripts/sig.genes.py',path])
+        proc = sp.Popen(['python3','scripts/sig.genes.py',path])
 		
+        print(" ========== Pipeline Finished ========== ")
 			
 			
         print("\n")
@@ -600,6 +619,6 @@ class Analysis:
 
 if __name__ == "__main__":
 	skeleton_name = [x for x in os.listdir('inputs') if x.endswith('output.tsv')][0]
-	result = Analysis(data=skeleton_name,samplesheet='Groups.csv',blank_threshold_value=10000,method='default')
+	result = Analysis(data=skeleton_name,samplesheet='Groups.csv',blank_threshold_value=0,method='default')
 	result.t_test()
 
