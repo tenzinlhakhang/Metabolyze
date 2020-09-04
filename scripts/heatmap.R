@@ -109,7 +109,7 @@ heatmap <- function(comparison,pvalue,param){
   pdf(pdf_name)
   
 
-  if (nrow(merged) > 200){row_name_toggle <- FALSE} else { row_name_toggle <- FALSE}
+  if (nrow(merged) > 200){row_name_toggle <- FALSE} else { row_name_toggle <- TRUE}
   pheatmap(as.matrix(merged), color = cell_colors,
            border_color = NA,show_rownames = row_name_toggle,fontsize = 6, 
            scale = "row", cluster_rows = T, annotation_colors = ann_color,

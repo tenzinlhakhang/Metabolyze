@@ -43,8 +43,8 @@ class Analysis:
         
         skeleton_input = pd.read_table(self.data)
         metabolite_list = skeleton_input['Metabolite']
-        if len(metabolite_list) != len(set(metabolite_list)):
-            raise Exception('Error: Check Metabolite column for duplicates in : Skeleton_input.tsv')
+        # if len(metabolite_list) != len(set(metabolite_list)):
+#             raise Exception('Error: Check Metabolite column for duplicates in : Skeleton_input.tsv')
         
         if self.get_matrix(self.get_ids('All')).isnull().values.any():
             raise Exception('Error: Check for Missing Values in Sample intensities: Skeleton_input.csv')
@@ -152,12 +152,12 @@ class Analysis:
     def get_imputed_full_matrix(self,full_matrix,param):
         
         blank_matrix = pd.DataFrame(self.get_matrix(self.get_ids('Blank')))
+        
         blank_threshold = pd.DataFrame(blank_matrix.mean(axis=1)*3)+ self.blank_threshold_value
         blank_threshold['Metabolite'] = blank_threshold.index
         blank_threshold.columns = ['blank_threshold','Metabolite']
-
-
         test_dictionary = {}
+        #print(full_matrix)
         for index, row in full_matrix.iterrows():
             test_list = []
     #print(index)
@@ -268,7 +268,7 @@ class Analysis:
         return(compiled_final,final)
     def print_blank_threshold(self):
         print(self.blank_threshold_value)
-		
+        
     def dme_comparisons(self):
         
         sample_groups = self.get_groups()
@@ -301,6 +301,8 @@ class Analysis:
         print("\n")
         print("################")
         print("Pipeline executed:")
+
+        # Create samplesheet
         samplesheet = pd.read_csv("inputs/Groups.tsv",sep='\t')
         samplesheet['Color'] = 'NA'
         colors = ['#FF0000','#0000FF','#000000','#008000','#FFFF00','#800080','#FFC0CB',"#c0feff","#5b2d8c","#7f8c2d","#F1948A","#BB8FCE","#AED6F1","#A3E4D7","#F7DC6F","#DC7633","#5D6D7E","#7B7D7D"]
@@ -310,6 +312,27 @@ class Analysis:
 
         samplesheet.to_csv('inputs/Groups.csv',index = False)
         
+
+        # Create skeleton_input
+        skeleton = pd.read_csv(self.data,sep='\t')
+
+        if 'Skeleton_Metabolite' in skeleton:
+            skeleton.to_csv(self.data,sep='\t',index=False)
+        else:
+            skeleton['numbers'] = pd.Series(np.arange(1,len(skeleton)+1,1))
+            skeleton['New_Metabolite'] = skeleton['numbers'].astype(str) +'         '+ skeleton['Metabolite']
+            skeleton['Skeleton_Metabolite'] = skeleton['Metabolite']
+            skeleton['Metabolite'] = skeleton['New_Metabolite']
+            del skeleton['New_Metabolite']
+            del skeleton['numbers']
+
+            col_name="Skeleton_Metabolite"
+            first_col = skeleton.pop(col_name)
+            skeleton.insert(0, col_name, first_col)
+
+            skeleton.to_csv(self.data,sep='\t',index=False)
+
+
         self.input_check()
         print("\n")
         print("Creating Directories...")
@@ -324,9 +347,10 @@ class Analysis:
         unique_comparisons = self.dme_comparisons()
 
         #Meta Data on Metabolites
-        standard = pd.read_table(self.data)
+        standard = pd.read_csv(self.data,sep='\t')
         detection_column_index = standard.columns.get_loc("detections")
         standard = standard.iloc[:,0:detection_column_index]
+
 
         # Set directory for results folder 
         if self.method == 'flux':
@@ -403,11 +427,6 @@ class Analysis:
             
             
             proc = sp.Popen(['python3','-W ignore','pca.py',comparison_pca,samplesheet_comparison_name,comparison_pca_name])
-            lol = pd.read_csv(comparison_pca)
-            lol.to_csv(comparison_pca_name+'_matrix.csv')
-            
-            lol2 = pd.read_csv(samplesheet_comparison_name)
-            lol2.to_csv(comparison_pca_name+'_samplesheet.csv')
             
             #samplesheet_comparison_name.to_csv(samplesheet_comparison_name)
             
@@ -524,7 +543,7 @@ class Analysis:
         
             #Generate Volcano
             print("Generating Volcano Plot: %s" %comparison_name)
-        	
+            
             if self.method == 'default':
                 proc = sp.Popen(['Rscript','scripts/volcano.plot.R',comparison_name,'True'])
             else:
@@ -558,7 +577,7 @@ class Analysis:
             
         compiled.to_csv(results_folder+'Tables/'+'dme.compiled.csv')
         
-        dme_meta_data = standard[['Metabolite','Formula','Ion Type','mz','ppm','RT','RT_range']]
+        dme_meta_data = standard[['Metabolite','Formula','Ion Type','mz','ppm','RT','RT_range','Skeleton_Metabolite']]
 
         dme_meta_data.index = dme_meta_data['Metabolite']
         compiled = pd.merge(dme_meta_data,compiled,on='Metabolite')
@@ -603,10 +622,12 @@ class Analysis:
 
 
         proc = sp.Popen(['python3','scripts/sig.genes.py',path])
-		
+        proc = sp.Popen(['python3','plot.qc.py'])
+
+
         print(" ========== Pipeline Finished ========== ")
-			
-			
+            
+            
         print("\n")
         print("\n")
         print("\n")
@@ -618,7 +639,7 @@ class Analysis:
 
 
 if __name__ == "__main__":
-	skeleton_name = [x for x in os.listdir('inputs') if x.endswith('output.tsv')][0]
-	result = Analysis(data=skeleton_name,samplesheet='Groups.csv',blank_threshold_value=0,method='default')
-	result.t_test()
+    skeleton_name = [x for x in os.listdir('inputs') if x.endswith('output.tsv')][0]
+    result = Analysis(data=skeleton_name,samplesheet='Groups.csv',blank_threshold_value=0,method='default')
+    result.t_test()
 

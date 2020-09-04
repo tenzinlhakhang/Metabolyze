@@ -1,1 +1,16 @@
-File	id	GroupS09012	DJ1_11_1	WTS09013	DJ1_11_2	WTS09014	DJ1_11_3	WTS09015	DJ1_11_4	WTS09016	DJ1_11_5	WTS09017	DJ1_17_1	KOS09018	DJ1_17_2	KOS09019	DJ1_17_3	KOS09020	DJ1_17_4	KOS09021	DJ1_17_5	KOSQ515_Blank_0	SQ515_Blank_0	BlankSQ515_Blank_1	SQ515_Blank_1	BlankSQ515_Blank_2	SQ515_Blank_2	BlankSQ515_Blank_3	SQ515_Blank_3	BlankSQ515_Blank_4	SQ515_Blank_4	BlankSQ515_Blank_5	SQ515_Blank_5	Blank
+File	id	Group
+S09190	veh_1	vehicle control
+S09191	veh_2	vehicle control
+S09192	veh_3	vehicle control
+S09193	KG_1	KG experimental group
+S09194	KG_2	KG experimental group
+S09195	KG_3	KG experimental group
+S09196	DMKG_1	DMKG experimental group
+S09197	DMKG_2	DMKG experimental group
+S09198	DMKG_3	DMKG experimental group
+SQ530_Blank_0	Blank_0	Blank
+SQ530_Blank_1	Blank_1	Blank
+SQ530_Blank_2	Blank_2	Blank
+SQ530_Blank_3	Blank_3	Blank
+SQ530_Blank_4	Blank_4	Blank
+SQ530_Blank_5	Blank_5	Blank

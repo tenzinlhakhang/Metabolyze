@@ -1,17 +1,16 @@
 File,id,Group,Color
-S09012,DJ1_11_1,WT,#FF0000
-S09013,DJ1_11_2,WT,#FF0000
-S09014,DJ1_11_3,WT,#FF0000
-S09015,DJ1_11_4,WT,#FF0000
-S09016,DJ1_11_5,WT,#FF0000
-S09017,DJ1_17_1,KO,#0000FF
-S09018,DJ1_17_2,KO,#0000FF
-S09019,DJ1_17_3,KO,#0000FF
-S09020,DJ1_17_4,KO,#0000FF
-S09021,DJ1_17_5,KO,#0000FF
-SQ515_Blank_0,SQ515_Blank_0,Blank,NA
-SQ515_Blank_1,SQ515_Blank_1,Blank,NA
-SQ515_Blank_2,SQ515_Blank_2,Blank,NA
-SQ515_Blank_3,SQ515_Blank_3,Blank,NA
-SQ515_Blank_4,SQ515_Blank_4,Blank,NA
-SQ515_Blank_5,SQ515_Blank_5,Blank,NA
+S09190,veh_1,vehicle control,#FF0000
+S09191,veh_2,vehicle control,#FF0000
+S09192,veh_3,vehicle control,#FF0000
+S09193,KG_1,KG experimental group,#0000FF
+S09194,KG_2,KG experimental group,#0000FF
+S09195,KG_3,KG experimental group,#0000FF
+S09196,DMKG_1,DMKG experimental group,#000000
+S09197,DMKG_2,DMKG experimental group,#000000
+S09198,DMKG_3,DMKG experimental group,#000000
+SQ530_Blank_0,Blank_0,Blank,NA
+SQ530_Blank_1,Blank_1,Blank,NA
+SQ530_Blank_2,Blank_2,Blank,NA
+SQ530_Blank_3,Blank_3,Blank,NA
+SQ530_Blank_4,Blank_4,Blank,NA
+SQ530_Blank_5,Blank_5,Blank,NA
