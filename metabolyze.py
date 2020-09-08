@@ -14,6 +14,18 @@ import time
 import warnings
 warnings.filterwarnings("ignore")
 
+class color:
+   PURPLE = '\033[95m'
+   CYAN = '\033[96m'
+   DARKCYAN = '\033[36m'
+   BLUE = '\033[94m'
+   GREEN = '\033[92m'
+   YELLOW = '\033[93m'
+   RED = '\033[91m'
+   BOLD = '\033[1m'
+   UNDERLINE = '\033[4m'
+   END = '\033[0m'
+
 
 
 #warnings.filterwarnings("ignore")
@@ -299,7 +311,7 @@ class Analysis:
     
     def t_test(self):
         print("\n")
-        print("################")
+        print("============================================")
         print("Pipeline executed:")
 
         # Create samplesheet
@@ -528,8 +540,13 @@ class Analysis:
             # Add impact score
             
             
+            print("\n")
+            print("\n")
+            print("\n")
+            print("===========================================================================================")
             
-            print("Analysis",":",comparison[0]+'_vs_'+comparison[1])
+            print('\033[1m' + "Analysis",":",comparison[0]+'_vs_'+comparison[1])
+            print('\n')
             print('Results Generated: %s'%comparison_name)
             final_df_m = final_df_m.fillna('NA')
             
@@ -631,7 +648,7 @@ class Analysis:
         print("\n")
         print("\n")
         print("\n")
-        print("#######")
+        print("===============================================")
         print("\n")
         print("\n")
         print("\n")
@@ -639,7 +656,24 @@ class Analysis:
 
 
 if __name__ == "__main__":
-    skeleton_name = [x for x in os.listdir('inputs') if x.endswith('output.tsv')][0]
-    result = Analysis(data=skeleton_name,samplesheet='Groups.csv',blank_threshold_value=0,method='default')
-    result.t_test()
+    try:
+        print('\n')
+        print('\n')
+        print('\n')
+        print('\n')
+        print('\n')
 
+        print('\033[1m' + '============== Pipeline Executed ==============')
+        skeleton_name = [x for x in os.listdir('inputs') if x.endswith('quantified.tsv')][0]
+        result = Analysis(data=skeleton_name,samplesheet='Groups.csv',blank_threshold_value=0,method='default')
+        result.t_test()
+    except IndexError:
+
+        print('\n')
+        print('\n')
+        print('\n')
+        print('=== quantified.tsv input not detected ===')
+        print('=== Checking for output.tsv input ===')
+        skeleton_name = [x for x in os.listdir('inputs') if x.endswith('output.tsv')][0]
+        result = Analysis(data=skeleton_name,samplesheet='Groups.csv',blank_threshold_value=0,method='default')
+        result.t_test()

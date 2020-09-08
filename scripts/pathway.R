@@ -1,10 +1,14 @@
+options(warn=-1)
 suppressMessages(library('MetaboAnalystR',quietly = TRUE))
 suppressMessages(library('filesstrings',quietly = TRUE))
-args = commandArgs(trailingOnly=TRUE)
-suppressMessages(library('pathview'))
-suppressMessages(library('tidyr'))
-suppressMessages(library('dplyr'))
+suppressMessages(library('pathview',quietly = TRUE))
+suppressMessages(library('tidyr',quietly = TRUE))
+suppressMessages(library('dplyr',quietly = TRUE))
 
+args = commandArgs(trailingOnly=TRUE)
+
+
+message("========== Executing Pathway Analysis ==========")
 
 setwd(args[1])
 
@@ -160,7 +164,7 @@ perform_pathways <- function(file){
 }
 
 
-message(" ========== Performing Pathway Analysis ========== ")
+
 
 bar <- function(x) tryCatch(perform_pathways(x), error = function(e) e)
 

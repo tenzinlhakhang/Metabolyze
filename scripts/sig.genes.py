@@ -17,7 +17,6 @@ for root, dirs, files in os.walk(os.path.abspath(directory)):
             #print(root,file)
             file_name = (root,file)            
             file_name = ('/'.join(file_name))
-            print(file_name)
             result = pd.read_csv(file_name)
             
             result_sig_genes = result.loc[result['ttest_pval'] < 0.05]['Metabolite']
