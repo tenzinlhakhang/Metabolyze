@@ -665,7 +665,7 @@ if __name__ == "__main__":
 
         print('\033[1m' + '============== Pipeline Executed ==============')
         skeleton_name = [x for x in os.listdir('inputs') if x.endswith('.quantified')][0]
-        result = Analysis(data=skeleton_name,samplesheet='Groups.csv',blank_threshold_value=0,method='default')
+        result = Analysis(data=skeleton_name,samplesheet='Groups.csv',blank_threshold_value=10000,method='default')
         result.t_test()
     except IndexError:
 
@@ -675,5 +675,5 @@ if __name__ == "__main__":
         print('=== .quantified input not detected ===')
         print('=== Checking for output.tsv input ===')
         skeleton_name = [x for x in os.listdir('inputs') if x.endswith('output.tsv')][0]
-        result = Analysis(data=skeleton_name,samplesheet='Groups.csv',blank_threshold_value=0,method='default')
+        result = Analysis(data=skeleton_name,samplesheet='Groups.csv',blank_threshold_value=10000,method='default')
         result.t_test()
