@@ -35,22 +35,16 @@ install.packages('pheatmap')
 
 ## Demo Example
 
-File 	 id   Group 
---- | --- | --- 
-S02011 | Sample_1 | Control 
-S02012 | Sample_2 | Control 
-S02013 | Sample_3 | Treatment 
-S02014 | Sample_4 | Treatment 
-S02015 | Blank_1 | Blank 
-S02016 | Blank_2 | Blank 
-S02017 | Blank_3 | Blank 
-S02018 | Blank_4 | Blank 
-
-
-| Column 1       | Column 2     | Column 3     |
-| :------------- | :----------: | -----------: |
-|  Cell Contents | More Stuff   | And Again    |
-| You Can Also   | Put Pipes In | Like this \| |
+|File |	 id |  Group |
+|--- | --- | --- |
+| S02011 | Sample_1 | Control |
+| S02012 | Sample_2 | Control |
+| S02013 | Sample_3 | Treatment |
+| S02014 | Sample_4 | Treatment |
+| S02015 | Blank_1 | Blank |
+| S02016 | Blank_2 | Blank |
+| S02017 | Blank_3 | Blank |
+| S02018 | Blank_4 | Blank |
 
 
 
@@ -67,16 +61,16 @@ To perform this test only one additional column is needed in the Groups.csv file
 
 ## Pairwise Groups.csv Demo Example 
 
-File 	 id   Group   Covariate
---- | --- | --- | ---
-S02011 | Sample_1 | Control | Patient_1 
-S02012 | Sample_2 | Treatment | Patient_1 
-S02013 | Sample_3 | Control | Patient_2 
-S02014 | Sample_4 | Treatment | Patient_2 
-S02015 | Blank_1 | Blank | NA 
-S02016 | Blank_2 | Blank | NA 
-S02017 | Blank_3 | Blank | NA 
-S02018 | Blank_4 | Blank | NA 
+| File |	 id |  Group |  Covariate| 
+| --- | --- | --- | ---| 
+|S02011 | Sample_1 | Control | Patient_1 |
+|S02012 | Sample_2 | Treatment | Patient_1 |
+| S02013 | Sample_3 | Control | Patient_2 |
+| S02014 | Sample_4 | Treatment | Patient_2 |
+| S02015 | Blank_1 | Blank | NA |
+| S02016 | Blank_2 | Blank | NA |
+| S02017 | Blank_3 | Blank | NA |
+| S02018 | Blank_4 | Blank | NA |
 
 
 Then run the pairwise.metabolyze.R like below, pointing to the Intensity.corrected.values.csv file of interest.
@@ -96,6 +90,12 @@ flux.output.csv in the associated Tables directory where the Intensity.values.de
 python scripts/flux.py DME-results-40-Samples/Tables/Intensity.corrected.values.csv
 ```
 
+## Normalized Analysis Pipeline
+
+To run the a median and sum normalized analysis of the input data, run the following command.
+```
+python normalize.py
+```
 
 
 
