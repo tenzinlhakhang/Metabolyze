@@ -31,7 +31,7 @@ install.packages('pheatmap')
 ## Inputs
 1) Create an inputs directory
 2) Include a Groups.tsv file that resembles the template below
-3) Include a skeleton_output.tsv
+3) Include the processed raw data file 'Skeleton_output.tsv'
 
 ## Demo Example
 
