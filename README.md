@@ -92,7 +92,7 @@ python scripts/flux.py DME-results-40-Samples/Tables/Intensity.corrected.values.
 
 ## Normalized Analysis Pipeline
 
-To run the a median and sum normalized analysis of the input data, run the following command.
+To run run a median and sum normalized analysis of the input data, run the following command to execute the pipeline on the input data.
 ```
 python normalize.py
 ```
