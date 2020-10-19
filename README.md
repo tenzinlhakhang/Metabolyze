@@ -18,7 +18,7 @@ R = R 3.5.1
 It is suggested to create a virtual environment for the installation step
 
 ```
-$ git clone https://github.com/NYUMetabolomics/metabolyze.git
+$ git clone https://github.com/tenzinlhakhang/Metabolyze.git
 ```
 
 ```
