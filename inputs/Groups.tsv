@@ -1,16 +1,15 @@
 File	id	Group
-S09190	veh_1	vehicle control
-S09191	veh_2	vehicle control
-S09192	veh_3	vehicle control
-S09193	KG_1	KG experimental group
-S09194	KG_2	KG experimental group
-S09195	KG_3	KG experimental group
-S09196	DMKG_1	DMKG experimental group
-S09197	DMKG_2	DMKG experimental group
-S09198	DMKG_3	DMKG experimental group
-SQ530_Blank_0	Blank_0	Blank
-SQ530_Blank_1	Blank_1	Blank
-SQ530_Blank_2	Blank_2	Blank
-SQ530_Blank_3	Blank_3	Blank
-SQ530_Blank_4	Blank_4	Blank
-SQ530_Blank_5	Blank_5	Blank
+S10228	Before dialysis 1_1	Control
+S10229	Before dialysis 1_2	Control
+S10230	Before dialysis 2_1	Control
+S10231	Before dialysis 2_2	Control
+S10232	After dialysis 1_1	Treatment
+S10233	After dialysis 1_2	Treatment
+S10234	After dialysis 2_1	Treatment
+S10235	After dialysis 2_2	Treatment
+SQ567_Blank_0	Blank_0	Blank
+SQ567_Blank_1	Blank_1	Blank
+SQ567_Blank_2	Blank_2	Blank
+SQ567_Blank_3	Blank_3	Blank
+SQ567_Blank_4	Blank_4	Blank
+SQ567_Blank_5	Blank_5	Blank

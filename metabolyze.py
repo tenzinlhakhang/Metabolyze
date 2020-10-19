@@ -633,7 +633,7 @@ class Analysis:
             print('Unsuitable Metabolite Names for Pathway Analysis')
         else:
             proc = sp.Popen(['Rscript','scripts/pathway.R',path,output_path])
-#                 time.sleep(2)
+#      time.sleep(2)
         impact_folder = results_folder + 'Tables/dme.compiled.csv'
         proc = sp.Popen(['python3','scripts/impact.correlation.py', impact_folder])
 
