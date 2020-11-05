@@ -639,7 +639,7 @@ class Analysis:
 
 
         proc = sp.Popen(['python3','scripts/sig.genes.py',path])
-        proc = sp.Popen(['python3','plot.qc.py'])
+        proc = sp.Popen(['python3','scripts/plot.qc.py',results_folder])
 
 
         print(" ========== Pipeline Finished ========== ")

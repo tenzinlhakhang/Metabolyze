@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 import os
 import numpy as np
 
+
+results_folder = sys.argv[1]
 class Analysis:
     
     def __init__(self, data,samplesheet,blank_threshold_value,method):
@@ -138,8 +140,9 @@ class Analysis:
 
 
 
-if not os.path.exists('QC'):
-    os.makedirs('QC')
+
+if not os.path.exists(results_folder+'QC'):
+    os.makedirs(results_folder+'QC')
 
 skeleton_name = [x for x in os.listdir('inputs') if x.endswith('output.tsv')][0]
 
@@ -153,7 +156,7 @@ ax = sns.distplot(np.array(skeleton_input['detections']), bins=20, kde=False, ru
 ax.set_title('Sample Detection Frequency')
 ax.set_ylabel('Detection')
 ax.set_xlabel('Frequency')
-plt.savefig('QC/plot.detection.png',dpi=400)
+plt.savefig(results_folder+'QC/plot.detection.png',dpi=400)
 
 
 a4_dims = (11.7, 8.27)
@@ -162,7 +165,7 @@ ax = sns.countplot(y="winner", data=skeleton_input)
 ax.set_title('Sample Winner vs. Frequency')
 ax.set_ylabel('Sample')
 ax.set_xlabel('Count')
-plt.savefig('QC/plot.winner.png',dpi=400)
+plt.savefig(results_folder+'QC/plot.winner.png',dpi=400)
 # 
 # 
 # skeleton_input[['ion','polarity']] = skeleton_input['Ion Type'].str.split(']',expand=True)
@@ -211,7 +214,7 @@ ax = sns.violinplot(x="lognorm", y="Sample", data=df,scale="count",inner='box',p
 ax.set_title('Violin Plot - lognorm')
 ax.set_ylabel('Sample')
 ax.set_xlabel('Normalized Intensity')
-plt.savefig('QC/plot.distribution.png',dpi=400)
+plt.savefig(results_folder+'QC/plot.distribution.png',dpi=400)
 
 
 sum_intensity = pd.DataFrame(full_matrix.sum())
@@ -224,7 +227,7 @@ ax = sns.barplot(x="Sum Signal", y="Sample", data=sum_intensity,palette=groups['
 ax.set_title('Sample Sum Intensities')
 ax.set_ylabel('Sample')
 ax.set_xlabel('Sum Signal')
-plt.savefig('QC/plot.sum.signal.png',dpi=400)
+plt.savefig(results_folder+'QC/plot.sum.signal.png',dpi=400)
 
 
 
@@ -237,7 +240,7 @@ fig, ax = plt.subplots(figsize=a4_dims)
 ax = sns.heatmap(full_corr,annot=True,linewidths=.5,cmap="vlag")
 ax.set_title('Sample Correlation Analysis')
 
-plt.savefig('QC/plot.correlation.png',dpi=400)
+plt.savefig(results_folder+'QC/plot.correlation.png',dpi=400)
 
 
 
@@ -246,7 +249,7 @@ plt.savefig('QC/plot.correlation.png',dpi=400)
 a4_dims = (15.7, 8.27)
 fig, ax = plt.subplots(figsize=a4_dims)
 ax = sns.pairplot(full_matrix)
-plt.savefig('QC/plot.correlation.pairwise.png',dpi=400)
+plt.savefig(results_folder+'QC/plot.correlation.pairwise.png',dpi=400)
 
 
 

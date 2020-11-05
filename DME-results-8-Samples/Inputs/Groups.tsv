@@ -1,0 +1,15 @@
+File	id	Group	Color
+S10228	Before dialysis 1_1	Control	#FF0000
+S10229	Before dialysis 1_2	Control	#FF0000
+S10230	Before dialysis 2_1	Control	#FF0000
+S10231	Before dialysis 2_2	Control	#FF0000
+S10232	After dialysis 1_1	Treatment	#0000FF
+S10233	After dialysis 1_2	Treatment	#0000FF
+S10234	After dialysis 2_1	Treatment	#0000FF
+S10235	After dialysis 2_2	Treatment	#0000FF
+SQ567_Blank_0	Blank_0	Blank	NA
+SQ567_Blank_1	Blank_1	Blank	NA
+SQ567_Blank_2	Blank_2	Blank	NA
+SQ567_Blank_3	Blank_3	Blank	NA
+SQ567_Blank_4	Blank_4	Blank	NA
+SQ567_Blank_5	Blank_5	Blank	NA
