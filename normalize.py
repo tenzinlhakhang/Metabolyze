@@ -39,7 +39,7 @@ final.to_csv('inputs/skeleton_sum_normalized.tsv',sep='\t',index=False)
 
 
 # Median
-original.to_csv('inputs/sum.test.forreal.tsv',sep='\t')
+
 matrix_median_normalized.index.names = ['Metabolite']
 detect_column = original.columns.get_loc("detections")
 meta_data_df = original[original.columns[0:detect_column+1]]
