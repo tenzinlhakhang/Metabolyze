@@ -45,7 +45,7 @@ for impact_score in scatter_subset:
     data = [trace]
     fig= go.Figure(data=data, layout=layout)
     file_name = dme_file.split('/')[0]+'/Impacts/'+impact_score.split('_impact')[0]+'.html'
-    plotly.offline.plot(fig,filename=file_name)
+    plotly.offline.plot(fig,filename=file_name,auto_open=False)
 
 
 

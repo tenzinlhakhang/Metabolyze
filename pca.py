@@ -188,7 +188,7 @@ def main_plot():
 	fig=dict(data=data, layout=layout)
 
 
-	plotly.offline.plot(fig, filename=str(pca_name))
+	plotly.offline.plot(fig, filename=str(pca_name),auto_open=False)
 	#fig.write_image("images/fig1.pdf")
 main_plot()
 #plotly.offline.iplot(fig)

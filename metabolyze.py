@@ -629,10 +629,10 @@ class Analysis:
         output_path = os.path.abspath(results_folder+'Pathway')
 
         
-        if 'Feature' in str(final_df_m['Metabolite'].tolist()[2]):
-            print('Unsuitable Metabolite Names for Pathway Analysis')
-        else:
-            proc = sp.Popen(['Rscript','scripts/pathway.R',path,output_path])
+#        if 'Feature' in str(final_df_m['Metabolite'].tolist()[2]):
+#            print('Unsuitable Metabolite Names for Pathway Analysis')
+#        else:
+#            proc = sp.Popen(['Rscript','scripts/pathway.R',path,output_path])
 #      time.sleep(2)
         impact_folder = results_folder + 'Tables/dme.compiled.csv'
         proc = sp.Popen(['python3','scripts/impact.correlation.py', impact_folder])
